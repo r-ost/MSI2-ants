@@ -13,7 +13,7 @@ internal class Program
         Console.WriteLine("CVRP Demo");
         Console.WriteLine("======================");
 
-        var instanceName = "X-n101-k25";
+        var instanceName = "X-n110-k13";
 
         var testDirPath = @"D:\Projects\MSI2-ants\TestData";
 
@@ -67,8 +67,8 @@ internal class Program
             Console.WriteLine($"Error solving VRP instance with greedy solver: {ex.Message}");
         }
 
-        // Solve the CVRP instance using the ant colony solver
-        Console.WriteLine($"\n3. Solving the CVRP instance using the ant colony solver {DateTimeOffset.UtcNow}:");
+        // Solve the CVRP instance using the standard ant colony solver
+        Console.WriteLine($"\n3. Solving the CVRP instance using the standard ant colony solver {DateTimeOffset.UtcNow}:");
         try
         {
             if (vrpInstance == null)
@@ -78,17 +78,17 @@ internal class Program
 
             var acoSolver = new AntColonySolver
             {
-                AntCount = 200,
-                MaxIterations = 200,
+                AntCount = 50,
+                MaxIterations = 100,
                 Alpha = 1.0,
                 Beta = 5.0,
-                EvaporationRate = 0.2,
+                EvaporationRate = 0.1,
                 Q = 100,
                 InitialPheromone = 0.1
             };
 
             var acoSolution = acoSolver.Solve(vrpInstance);
-            Console.WriteLine($"Ant Colony solution: {acoSolution}");
+            Console.WriteLine($"Standard Ant Colony solution: {acoSolution}");
 
             // Plot the ACO solution
             var acoSolutionPlotPath = Path.Combine(@"D:\Projects\MSI2-ants\CVRPAnts.ConsoleApp\Plots\Solutions",
@@ -102,16 +102,90 @@ internal class Program
             Console.WriteLine($"Error solving VRP instance with ant colony solver: {ex.Message}");
         }
 
-        // Parse a CVRP solution from a text file
-        Console.WriteLine($"\n4. Parsing an optimal CVRP solution from text file: {solutionFilePath}, {DateTimeOffset.UtcNow}");
+        // Solve the CVRP instance using the 2-opt ant colony solver
+        Console.WriteLine($"\n4. Solving the CVRP instance using the 2-opt ant colony solver {DateTimeOffset.UtcNow}:");
         try
         {
-            var solution = CVRPSolutionParser.ParseSolutionFile(solutionFilePath, vrpInstance!.Graph, 1000, int.MaxValue);
+            if (vrpInstance == null)
+            {
+                throw new InvalidOperationException("VRP instance is not loaded.");
+            }
+
+            var aco2OptSolver = new AntColony2OptSolver
+            {
+                AntCount = 50,
+                MaxIterations = 100,
+                Alpha = 1.0,
+                Beta = 5.0,
+                EvaporationRate = 0.1,
+                Q = 100,
+                InitialPheromone = 0.1
+            };
+
+            var aco2OptSolution = aco2OptSolver.Solve(vrpInstance);
+            Console.WriteLine($"Ant Colony 2-Opt solution: {aco2OptSolution}");
+
+            // Plot the ACO 2-Opt solution
+            var aco2OptSolutionPlotPath = Path.Combine(@"D:\Projects\MSI2-ants\CVRPAnts.ConsoleApp\Plots\Solutions",
+                DateTime.Now.ToString("yyyyMMdd_HHmmss") + $"_{vrpInstance.Name}_aco2opt.png");
+            GraphPlotter.PlotSolution(aco2OptSolution, aco2OptSolutionPlotPath);
+
+            Console.WriteLine($"Ant Colony 2-Opt solution plotted to: {aco2OptSolutionPlotPath}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error solving VRP instance with ant colony 2-opt solver: {ex.Message}");
+        }
+
+        // // Solve the CVRP instance using the Max-Min ant colony solver
+        // Console.WriteLine($"\n5. Solving the CVRP instance using the Max-Min ant colony solver {DateTimeOffset.UtcNow}:");
+        // try
+        // {
+        //     if (vrpInstance == null)
+        //     {
+        //         throw new InvalidOperationException("VRP instance is not loaded.");
+        //     }
+
+        //     var acoMaxMinSolver = new AntColonyMaxMinSolver
+        //     {
+        //         AntCount = 50,
+        //         MaxIterations = 100,
+        //         Alpha = 1.0,
+        //         Beta = 5.0,
+        //         EvaporationRate = 0.1,
+        //         Q = 100,
+        //         InitialPheromone = 0.1,
+        //         PheromoneMin = 0.01,
+        //         PheromoneMax = 5.0,
+        //         OnlyBestUpdates = true,
+        //         RestagnationLimit = 20
+        //     };
+
+        //     var acoMaxMinSolution = acoMaxMinSolver.Solve(vrpInstance);
+        //     Console.WriteLine($"Max-Min Ant Colony solution: {acoMaxMinSolution}");
+
+        //     // Plot the ACO Max-Min solution
+        //     var acoMaxMinSolutionPlotPath = Path.Combine(@"D:\Projects\MSI2-ants\CVRPAnts.ConsoleApp\Plots\Solutions",
+        //         DateTime.Now.ToString("yyyyMMdd_HHmmss") + $"_{vrpInstance.Name}_acomaxmin.png");
+        //     GraphPlotter.PlotSolution(acoMaxMinSolution, acoMaxMinSolutionPlotPath);
+
+        //     Console.WriteLine($"Max-Min Ant Colony solution plotted to: {acoMaxMinSolutionPlotPath}");
+        // }
+        // catch (Exception ex)
+        // {
+        //     Console.WriteLine($"Error solving VRP instance with Max-Min ant colony solver: {ex.Message}");
+        // }
+
+        // Parse a CVRP solution from a text file
+        Console.WriteLine($"\n6. Parsing an optimal CVRP solution from text file: {solutionFilePath}, {DateTimeOffset.UtcNow}");
+        try
+        {
+            var solution = CVRPSolutionParser.ParseSolutionFile(solutionFilePath, vrpInstance!.Graph, vrpInstance!.VehicleCapacity, vrpInstance!.MaxRouteDistance);
 
             Console.WriteLine($"Parsed solution: {solution}");
 
             var solutionPlotPath = Path.Combine(@"D:\Projects\MSI2-ants\CVRPAnts.ConsoleApp\Plots\Solutions",
-                DateTime.Now.ToString("yyyyMMdd_HHmmss") + $"_{vrpInstance.Name}_optimal.png");
+                DateTime.Now.ToString("yyyyMMdd_HHmmss") + $"_{vrpInstance!.Name}_optimal.png");
             GraphPlotter.PlotSolution(solution, solutionPlotPath);
 
             Console.WriteLine($"Solution plotted to: {solutionPlotPath}");

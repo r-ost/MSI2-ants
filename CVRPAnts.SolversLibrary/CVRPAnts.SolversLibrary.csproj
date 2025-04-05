@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>CVRPAnts.SolversLibrary</AssemblyName>
+    <RootNamespace>CVRPAnts.SolversLibrary</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CVRPAnts.GraphLibrary\CVRPAnts.GraphLibrary.csproj" />
+  </ItemGroup>
+
+</Project>

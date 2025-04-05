@@ -54,7 +54,7 @@ public class Route
     {
         get
         {
-            return this.vertices.Sum(v => v.IsDepot ? 0 : v.Demand);
+            return this.vertices.Sum(v => v.Demand);
         }
     }
 

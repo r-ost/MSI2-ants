@@ -20,7 +20,7 @@ public static class GraphPlotter
     /// <param name="width">Image width</param>
     /// <param name="height">Image height</param>
     [SupportedOSPlatform("windows")]
-    public static void PlotGraph(Graph graph, string filePath, int width = 1200, int height = 1200, bool drawEdges = false)
+    public static void PlotGraph(Graph graph, string filePath, int width = 1200, int height = 1200)
     {
         if (graph == null || graph.VertexCount == 0)
         {
@@ -62,29 +62,12 @@ public static class GraphPlotter
         double scaleY = (height - 2 * margin) / (double)(maxY - minY);
         double scale = Math.Min(scaleX, scaleY);
 
-        if (drawEdges)
-        {
-            // Draw edges
-            using Pen edgePen = new(Color.LightGray, 1);
-            foreach (var edge in graph.Edges)
-            {
-                // Calculate scaled coordinates
-                int x1 = (int)((edge.Vertex1.X - minX) * scale) + margin;
-                int y1 = (int)((edge.Vertex1.Y - minY) * scale) + margin;
-                int x2 = (int)((edge.Vertex2.X - minX) * scale) + margin;
-                int y2 = (int)((edge.Vertex2.Y - minY) * scale) + margin;
-
-                // Draw the edge
-                graphics.DrawLine(edgePen, x1, y1, x2, y2);
-            }
-        }
-
         // Draw vertices
         foreach (var vertex in graph.Vertices)
         {
-            // Calculate scaled coordinates
+            // Calculate scaled coordinates with Y-axis flipped
             int x = (int)((vertex.X - minX) * scale) + margin;
-            int y = (int)((vertex.Y - minY) * scale) + margin;
+            int y = height - ((int)((vertex.Y - minY) * scale) + margin); // Flip Y
 
             // Determine vertex size and color based on whether it's a depot
             int size = vertex.Id == graph.Depot?.Id ? 12 : 8;

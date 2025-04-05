@@ -1,113 +1,61 @@
-using System.IO;
-using CVRPAnts.GraphLibrary;
+using System.Runtime.Versioning;
+using CVRPAnts.ParserLibrary;
+using CVRPAnts.SolversLibrary;
 
 namespace CVRPAnts.ConsoleApp;
 
-class Program
+internal class Program
 {
     [STAThread]
-    static void Main(string[] args)
+    [SupportedOSPlatform("windows")]
+    private static void Main(string[] args)
     {
         Console.WriteLine("CVRP Graph Library Demo");
         Console.WriteLine("======================");
 
-        // create graph
+        // 1. Parse a CVRP instance from a VRPLIB file
+        Console.WriteLine("\n2. Parsing a CVRP instance from VRPLIB file:");
 
-        var graph = new Graph();
-        graph.AddVertex(0, 0, 0); // Depot
-        graph.AddVertex(1, 1, 2, 5); // Customer 1
-        graph.AddVertex(2, 3, 4, 10); // Customer 2
-        graph.AddVertex(3, 5, 6, 15); // Customer 3
-        graph.AddVertex(4, 7, 8, 20); // Customer 4
+        CVRPInstance? vrpInstance = null;
+        try
+        {
+            string testFilePath = @"D:\Projects\MSI2-ants\TestData\X-n101-k25.vrp";
+            vrpInstance = FileHelper.LoadInstanceFromFile(testFilePath, 1000);
 
-        string plotFilePath = Path.Combine(@"D:\Projects\MSI2-ants\CVRPAnts.ConsoleApp\Plots", DateTime.Now.ToString("yyyyMMdd_HHmmss") + "_graph.png");
-        GraphPlotter.PlotGraph(graph, plotFilePath);
+            Console.WriteLine($"Loaded: {vrpInstance}");
+            Console.WriteLine($"Depot: Vertex {vrpInstance.Graph.Depot?.Id}");
+            Console.WriteLine($"Customer count: {vrpInstance.Graph.VertexCount - 1}");
 
+            // Plot the loaded graph
+            string vrpPlotPath = Path.Combine(@"D:\Projects\MSI2-ants\CVRPAnts.ConsoleApp\Plots\Instances",
+                DateTime.Now.ToString("yyyyMMdd_HHmmss") + $"_{vrpInstance.Name}.png");
+            GraphPlotter.PlotGraph(vrpInstance.Graph, vrpPlotPath);
 
-        // // Create test data directory if it doesn't exist
-        // string testDataDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestData");
-        // if (!Directory.Exists(testDataDir))
-        // {
-        //     Directory.CreateDirectory(testDataDir);
-        // }
+            Console.WriteLine($"Graph plotted to: {vrpPlotPath}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading VRP file: {ex.Message}");
+        }
 
-        // // Generate a small sample instance
-        // Console.WriteLine("Generating a small CVRP instance...");
-        // var instance = DataLoader.GenerateRandomInstance(
-        //     vertexCount: 15,   // 15 vertices (1 depot + 14 customers)
-        //     vehicleCount: 3,   // 3 vehicles
-        //     capacity: 30,      // Each vehicle can carry 30 units
-        //     maxDemand: 10,     // Each customer demands at most 10 units
-        //     maxRouteLength: 150 // Maximum route length constraint
-        // );
+        // 2. Parse a CVRP solution from a text file
+        Console.WriteLine("\n3. Parsing a CVRP solution from text file:");
+        try
+        {
+            string solutionFilePath = @"D:\Projects\MSI2-ants\TestData\X-n101-k25.sol";
+            var solution = CVRPSolutionParser.ParseSolutionFile(solutionFilePath, vrpInstance!.Graph, 1000, int.MaxValue);
 
-        // var graph = instance.Graph;
-        // int vehicleCapacity = instance.VehicleCapacity;
-        // int vehicleCount = instance.VehicleCount;
-        // double maxRouteLength = instance.MaxRouteLength;
+            Console.WriteLine($"Parsed solution: {solution}");
 
-        // // Display instance information
-        // Console.WriteLine($"Generated graph with {graph.VertexCount} vertices (1 depot + {graph.VertexCount - 1} customers)");
-        // Console.WriteLine($"Vehicle count: {vehicleCount}");
-        // Console.WriteLine($"Vehicle capacity: {vehicleCapacity}");
-        // Console.WriteLine($"Maximum route length: {maxRouteLength}");
-        // Console.WriteLine();
+            var solutionPlotPath = Path.Combine(@"D:\Projects\MSI2-ants\CVRPAnts.ConsoleApp\Plots\Solutions",
+                DateTime.Now.ToString("yyyyMMdd_HHmmss") + $"_{vrpInstance.Name}.png");
+            GraphPlotter.PlotSolution(solution, solutionPlotPath);
 
-        // // Print vertex information
-        // Console.WriteLine("Vertex information:");
-        // foreach (var vertex in graph.Vertices.OrderBy(v => v.Id))
-        // {
-        //     Console.WriteLine($"Vertex {vertex.Id}: ({vertex.X:F2}, {vertex.Y:F2}), Demand: {vertex.Demand}");
-        // }
-        // Console.WriteLine();
-
-        // // Save the instance to a file
-        // string instanceFile = Path.Combine(testDataDir, "sample_instance.txt");
-        // DataLoader.SaveGraphToFile(graph, vehicleCapacity, instanceFile);
-        // Console.WriteLine($"Saved instance to {instanceFile}");
-        // Console.WriteLine();
-
-        // // Create a sample solution manually (this would normally be done by an algorithm)
-        // Console.WriteLine("Creating a simple sample solution...");
-        // var solution = new Solution(graph, vehicleCount, vehicleCapacity, maxRouteLength);
-
-        // // Manually assign vertices to routes in a simple way
-        // var customerVertices = graph.Vertices.Where(v => !v.IsDepot).ToList();
-        // int verticesPerRoute = (int)Math.Ceiling(customerVertices.Count / (double)vehicleCount);
-
-        // for (int i = 0; i < customerVertices.Count; i++)
-        // {
-        //     int routeIndex = Math.Min(i / verticesPerRoute, vehicleCount - 1);
-        //     var route = solution.Routes[routeIndex];
-
-        //     // Try to add this vertex to the route
-        //     bool added = route.AddVertex(customerVertices[i]);
-        //     if (!added)
-        //     {
-        //         Console.WriteLine($"Warning: Could not add vertex {customerVertices[i].Id} to route {routeIndex + 1}. " +
-        //                            "Capacity or route length constraint violated.");
-        //     }
-        // }
-
-        // // Complete all routes by returning to depot
-        // foreach (var route in solution.Routes)
-        // {
-        //     route.CompleteRoute();
-        // }
-
-        // // Print solution
-        // Console.WriteLine("\nSample solution:");
-        // Console.WriteLine(solution);
-
-        // // Check if solution is valid
-        // Console.WriteLine($"Solution is {(solution.IsValid ? "valid" : "not valid")}");
-
-        // // Save some benchmark instances for testing algorithms
-        // Console.WriteLine("\nGenerating benchmark instances...");
-        // DataLoader.GenerateBenchmarkInstances(testDataDir);
-        // Console.WriteLine($"Benchmark instances saved to {testDataDir}");
-
-        // Console.WriteLine("\nPress any key to exit...");
-        // Console.ReadKey();
+            Console.WriteLine($"Solution plotted to: {solutionPlotPath}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading solution file: {ex.Message}");
+        }
     }
 }

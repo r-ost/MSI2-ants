@@ -28,7 +28,7 @@ public static class FileHelper
         {
             try
             {
-                var instance = CVRPParser.ParseVRPFile(file, maxRouteDistance);
+                var instance = CVRPInstanceParser.ParseVRPFile(file, maxRouteDistance);
                 instances[instance.Name] = instance;
             }
             catch (Exception ex)
@@ -49,7 +49,7 @@ public static class FileHelper
         string filePath,
         double maxRouteDistance)
     {
-        return CVRPParser.ParseVRPFile(filePath, maxRouteDistance);
+        return CVRPInstanceParser.ParseVRPFile(filePath, maxRouteDistance);
     }
 
     /// <summary>

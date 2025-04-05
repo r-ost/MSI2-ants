@@ -6,7 +6,7 @@ namespace CVRPAnts.ParserLibrary;
 /// <summary>
 /// Parser for CVRPLIB format files
 /// </summary>
-public class CVRPParser
+public class CVRPInstanceParser
 {
     /// <summary>
     /// Parse a CVRPLIB format file and return a VRPInstance

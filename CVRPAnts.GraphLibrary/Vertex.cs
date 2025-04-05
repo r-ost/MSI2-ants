@@ -39,7 +39,8 @@ public class Vertex(int id, int x, int y, int demand = 0)
     /// <returns>The distance between vertices</returns>
     public double DistanceTo(Vertex other)
     {
-        return Math.Sqrt(Math.Pow(this.X - other.X, 2) + Math.Pow(this.Y - other.Y, 2));
+        var res = Math.Sqrt(Math.Pow(this.X - other.X, 2) + Math.Pow(this.Y - other.Y, 2));
+        return Math.Round(res);
     }
 
     /// <summary>

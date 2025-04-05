@@ -5,6 +5,8 @@
         "source.fixAll": "explicit"
     },
     "cSpell.words": [
-        "CVRP"
+        "CVRP",
+        "CVRPLIB",
+        "VRPLIB"
     ]
 }

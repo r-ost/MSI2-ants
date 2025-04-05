@@ -7,7 +7,7 @@ using System.Linq;
 
 public abstract class AntColonyBaseSolver : ICVRPSolver
 {
-    protected readonly Random random;
+    protected readonly Random random = new(1337);
 
     // ACO parameters
     public int AntCount { get; set; } = 10;
@@ -28,7 +28,7 @@ public abstract class AntColonyBaseSolver : ICVRPSolver
         this.random = seed.HasValue ? new Random(seed.Value) : new Random();
     }
 
-    public CVRPSolution Solve(CVRPInstance instance)
+    public virtual CVRPSolution Solve(CVRPInstance instance)
     {
         this.graph = instance.Graph;
         this.capacity = instance.VehicleCapacity;

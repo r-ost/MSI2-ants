@@ -174,7 +174,7 @@ public static class GraphPlotter
             graphics.DrawLine(legendPen, legendX, legendY + 5, legendX + 30, legendY + 5);
 
             // Draw route number and info
-            string routeText = $"Route {i + 1}: {solution.Routes[i].Vertices.Count - 2} customers, demand: {solution.Routes[i].TotalDemand}";
+            string routeText = $"{i + 1}: {solution.Routes[i].Vertices.Count - 2} nodes, demand: {solution.Routes[i].TotalDemand}";
             graphics.DrawString(routeText, legendFont, legendTextBrush, legendX + 40, legendY);
 
             legendY += 20;

@@ -102,6 +102,24 @@ public class Route
         this.vertices.Add(vertex);
     }
 
+    public Vertex GetLastVertex()
+    {
+        if (this.vertices.Count == 0)
+        {
+            throw new InvalidOperationException("Route is empty, no last vertex available");
+        }
+        return this.vertices.Last();
+    }
+
+    public void RemoveLastVertex()
+    {
+        if (this.vertices.Count == 0)
+        {
+            throw new InvalidOperationException("Route is empty, no vertex to remove");
+        }
+        this.vertices.RemoveAt(this.vertices.Count - 1);
+    }
+
     public double CapacityUtilization => this.Capacity > 0 ? (double)this.TotalDemand / this.Capacity : 0;
 
     public double LengthUtilization => this.MaxRouteLength > 0 ? this.Length / this.MaxRouteLength : 0;

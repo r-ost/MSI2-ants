@@ -9,7 +9,7 @@ public class CVRPSolution
 
     public IReadOnlyList<Route> Routes => this.routes;
 
-    public double TotalCost => this.routes.Sum(r => r.Length);
+    public double TotalLength => this.routes.Sum(r => r.Length);
 
     public Graph Graph => this.graph;
 
@@ -66,7 +66,7 @@ public class CVRPSolution
 
     public override string ToString()
     {
-        var result = $"Solution with {this.routes.Count} routes, total cost: {this.TotalCost:F2}\n";
+        var result = $"Solution with {this.routes.Count} routes, total cost: {this.TotalLength:F2}\n";
         for (int i = 0; i < this.routes.Count; i++)
         {
             result += $"Route {i + 1}: {this.routes[i]}\n";

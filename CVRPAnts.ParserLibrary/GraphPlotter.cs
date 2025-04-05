@@ -118,13 +118,17 @@ public static class GraphPlotter
             Color.DarkOrange, Color.DarkCyan, Color.DeepPink, Color.Indigo
         };
 
-        // Draw routes first (so they're behind the vertices)
+        // Draw vertices
+        DrawVertices(graph, graphics, minX, minY, scale, margin, height);
+
+        // Draw routes 
         int depotId = graph.Depot?.Id ?? -1;
         using var pen = new Pen(Color.Black, 2);
 
         // Draw each route with a different color
         for (int i = 0; i < solution.Routes.Count; i++)
         {
+            bool firstVertex = true;
             var route = solution.Routes[i];
             Color routeColor = routeColors[i % routeColors.Length];
             pen.Color = routeColor;
@@ -150,17 +154,22 @@ public static class GraphPlotter
 
                 // Draw the edge
                 graphics.DrawLine(pen, x1, y1, x2, y2);
+
+                if (firstVertex)
+                {
+                    // draw dot in the first vertex
+                    using Brush brush = new SolidBrush(Color.Blue);
+                    graphics.FillEllipse(brush, x1 - 4, y1 - 4, 8, 8);
+                    firstVertex = false;
+                }
             }
         }
-
-        // Draw vertices
-        DrawVertices(graph, graphics, minX, minY, scale, margin, height);
 
         // Draw a legend for the routes
         using Font legendFont = new("Arial", 10);
         using Brush legendTextBrush = new SolidBrush(Color.Black);
-        int legendX = 20;
-        int legendY = 20;
+        int legendX = width - 250; // Position legend on the right side with margin
+        int legendY = 50; // Start legend from top with margin
 
         graphics.DrawString("Routes:", legendFont, legendTextBrush, legendX, legendY);
         legendY += 20;
@@ -179,6 +188,13 @@ public static class GraphPlotter
 
             legendY += 20;
         }
+
+        // draw total demand and distance
+        string totalDemandText = $"Total demand: {solution.TotalDemand}";
+        string totalDistanceText = $"Total distance: {solution.TotalLength}";
+        graphics.DrawString(totalDemandText, legendFont, legendTextBrush, legendX, legendY);
+        legendY += 20;
+        graphics.DrawString(totalDistanceText, legendFont, legendTextBrush, legendX, legendY);
 
         // Save the image to the specified file
         bitmap.Save(filePath, ImageFormat.Png);

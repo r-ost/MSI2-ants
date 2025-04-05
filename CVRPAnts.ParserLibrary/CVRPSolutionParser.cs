@@ -111,9 +111,9 @@ public class CVRPSolutionParser
         }
 
         // Verify if the parsed cost matches the calculated cost
-        if (cost.HasValue && cost.Value != solution.TotalCost)
+        if (cost.HasValue && cost.Value != solution.TotalLength)
         {
-            throw new FormatException($"Parsed cost {cost.Value} does not match calculated cost {solution.TotalCost}.");
+            throw new FormatException($"Parsed cost {cost.Value} does not match calculated cost {solution.TotalLength}.");
         }
 
         return solution;

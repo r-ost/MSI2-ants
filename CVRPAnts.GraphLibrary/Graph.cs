@@ -50,9 +50,9 @@ public class Graph
         return vertex;
     }
 
-    public Vertex? GetVertex(int id)
+    public Vertex GetVertex(int id)
     {
-        return this.vertices.TryGetValue(id, out var vertex) ? vertex : null;
+        return this.vertices.TryGetValue(id, out var vertex) ? vertex : throw new ArgumentException($"Vertex with ID {id} does not exist in the graph");
     }
 
     public Edge AddEdge(int vertexId1, int vertexId2)
@@ -96,7 +96,7 @@ public class Graph
         return edge;
     }
 
-    public Edge? GetEdge(int vertexId1, int vertexId2)
+    public Edge GetEdge(int vertexId1, int vertexId2)
     {
         // Ensure the smaller ID is always first for consistency
         if (vertexId1 > vertexId2)
@@ -105,7 +105,7 @@ public class Graph
         }
 
         var key = (vertexId1, vertexId2);
-        return this.edges.TryGetValue(key, out var edge) ? edge : null;
+        return this.edges.TryGetValue(key, out var edge) ? edge : throw new ArgumentException($"Edge between {vertexId1} and {vertexId2} does not exist");
     }
 
     public double GetDistance(int vertexId1, int vertexId2)

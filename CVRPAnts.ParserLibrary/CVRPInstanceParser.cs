@@ -39,6 +39,20 @@ public class CVRPInstanceParser
             graph.AddVertex(nodeId, x, y, demand, isDepot);
         }
 
+        // validate that distance from depot to all customers is less than maxRouteDistance
+        var depot = graph.Depot ?? throw new FormatException("No depot found in the graph.");
+        foreach (var vertex in graph.Vertices)
+        {
+            if (vertex.Id != depot.Id)
+            {
+                var distance = depot.DistanceTo(vertex);
+                if (2 * distance > maxRouteDistance)
+                {
+                    throw new FormatException($"Distance from depot to customer {vertex.Id} exceeds max route distance.");
+                }
+            }
+        }
+
         var instance = new CVRPInstance
         {
             Graph = graph,

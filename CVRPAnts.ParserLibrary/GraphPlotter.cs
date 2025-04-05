@@ -1,11 +1,9 @@
-using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using System.IO;
-using System.Linq;
 using System.Runtime.Versioning;
 using CVRPAnts.GraphLibrary;
+using CVRPAnts.SolversLibrary;
 
 namespace CVRPAnts.ParserLibrary;
 
@@ -67,19 +65,17 @@ public static class GraphPlotter
         if (drawEdges)
         {
             // Draw edges
-            using (Pen edgePen = new(Color.LightGray, 1))
+            using Pen edgePen = new(Color.LightGray, 1);
+            foreach (var edge in graph.Edges)
             {
-                foreach (var edge in graph.Edges)
-                {
-                    // Calculate scaled coordinates
-                    int x1 = (int)((edge.Vertex1.X - minX) * scale) + margin;
-                    int y1 = (int)((edge.Vertex1.Y - minY) * scale) + margin;
-                    int x2 = (int)((edge.Vertex2.X - minX) * scale) + margin;
-                    int y2 = (int)((edge.Vertex2.Y - minY) * scale) + margin;
+                // Calculate scaled coordinates
+                int x1 = (int)((edge.Vertex1.X - minX) * scale) + margin;
+                int y1 = (int)((edge.Vertex1.Y - minY) * scale) + margin;
+                int x2 = (int)((edge.Vertex2.X - minX) * scale) + margin;
+                int y2 = (int)((edge.Vertex2.Y - minY) * scale) + margin;
 
-                    // Draw the edge
-                    graphics.DrawLine(edgePen, x1, y1, x2, y2);
-                }
+                // Draw the edge
+                graphics.DrawLine(edgePen, x1, y1, x2, y2);
             }
         }
 

@@ -3,16 +3,8 @@ using CVRPAnts.SolversLibrary;
 
 namespace CVRPAnts.ParserLibrary;
 
-/// <summary>
-/// Parser for CVRPLIB format files
-/// </summary>
 public class CVRPInstanceParser
 {
-    /// <summary>
-    /// Parse a CVRPLIB format file and return a VRPInstance
-    /// </summary>
-    /// <param name="filePath">Path to the CVRPLIB file</param>
-    /// <returns>A VRPInstance containing the graph and problem parameters</returns>
     public static CVRPInstance ParseVRPFile(string filePath, double maxRouteDistance)
     {
         if (!File.Exists(filePath))

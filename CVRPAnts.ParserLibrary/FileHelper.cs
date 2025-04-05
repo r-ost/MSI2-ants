@@ -2,16 +2,8 @@ using CVRPAnts.SolversLibrary;
 
 namespace CVRPAnts.ParserLibrary;
 
-/// <summary>
-/// Utility class for file operations related to CVRP instances
-/// </summary>
 public static class FileHelper
 {
-    /// <summary>
-    /// Loads all VRPLIB format files from a directory
-    /// </summary>
-    /// <param name="directoryPath">Directory containing .vrp files</param>
-    /// <returns>Dictionary of instance names to VRPInstances</returns>
     public static Dictionary<string, CVRPInstance> LoadAllInstancesFromDirectory(
         string directoryPath,
         double maxRouteDistance)
@@ -40,11 +32,6 @@ public static class FileHelper
         return instances;
     }
 
-    /// <summary>
-    /// Loads a single VRPLIB format file
-    /// </summary>
-    /// <param name="filePath">Path to the .vrp file</param>
-    /// <returns>A VRPInstance object</returns>
     public static CVRPInstance LoadInstanceFromFile(
         string filePath,
         double maxRouteDistance)
@@ -52,11 +39,6 @@ public static class FileHelper
         return CVRPInstanceParser.ParseVRPFile(filePath, maxRouteDistance);
     }
 
-    /// <summary>
-    /// Exports a graph to a simple text format
-    /// </summary>
-    /// <param name="instance">The VRP instance to export</param>
-    /// <param name="filePath">Path where to save the exported file</param>
     public static void ExportInstance(CVRPInstance instance, string filePath)
     {
         using (var writer = new StreamWriter(filePath))

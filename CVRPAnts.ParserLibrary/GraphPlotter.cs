@@ -7,18 +7,8 @@ using CVRPAnts.SolversLibrary;
 
 namespace CVRPAnts.ParserLibrary;
 
-/// <summary>
-/// Utility for plotting graphs visually
-/// </summary>
 public static class GraphPlotter
 {
-    /// <summary>
-    /// Plots a graph to an image file
-    /// </summary>
-    /// <param name="graph">Graph to plot</param>
-    /// <param name="filePath">Where to save the image</param>
-    /// <param name="width">Image width</param>
-    /// <param name="height">Image height</param>
     [SupportedOSPlatform("windows")]
     public static void PlotGraph(Graph graph, string filePath, int width = 1200, int height = 1200)
     {
@@ -69,26 +59,12 @@ public static class GraphPlotter
         bitmap.Save(filePath, ImageFormat.Png);
     }
 
-    /// <summary>
-    /// Plots a VRPInstance to an image file
-    /// </summary>
-    /// <param name="instance">VRP instance to plot</param>
-    /// <param name="filePath">Where to save the image</param>
-    /// <param name="width">Image width</param>
-    /// <param name="height">Image height</param>
     [SupportedOSPlatform("windows")]
     public static void PlotInstance(CVRPInstance instance, string filePath, int width = 1200, int height = 1200)
     {
         PlotGraph(instance.Graph, filePath, width, height);
     }
 
-    /// <summary>
-    /// Plots a CVRP solution with routes in different colors
-    /// </summary>
-    /// <param name="solution">The CVRP solution to plot</param>
-    /// <param name="filePath">Where to save the image</param>
-    /// <param name="width">Image width</param>
-    /// <param name="height">Image height</param>
     [SupportedOSPlatform("windows")]
     public static void PlotSolution(CVRPSolution solution, string filePath, int width = 1200, int height = 1200)
     {
@@ -208,9 +184,6 @@ public static class GraphPlotter
         bitmap.Save(filePath, ImageFormat.Png);
     }
 
-    /// <summary>
-    /// Helper method to draw vertices on a graph
-    /// </summary>
     [SupportedOSPlatform("windows")]
     private static void DrawVertices(Graph graph, Graphics graphics, int minX, int minY, double scale, int margin, int height)
     {

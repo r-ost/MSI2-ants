@@ -7,34 +7,16 @@ public class CVRPSolution
     private readonly List<Route> routes;
     private readonly Graph graph;
 
-    /// <summary>
-    /// Gets all routes in the solution
-    /// </summary>
     public IReadOnlyList<Route> Routes => this.routes;
 
-    /// <summary>
-    /// Gets the total cost of the solution (sum of route lengths)
-    /// </summary>
     public double TotalCost => this.routes.Sum(r => r.Length);
 
-    /// <summary>
-    /// Gets the graph associated with this solution
-    /// </summary>
     public Graph Graph => this.graph;
 
-    /// <summary>
-    /// Gets the number of vehicles (routes) in this solution
-    /// </summary>
     public int RoutesCount => this.routes.Count;
 
-    /// <summary>
-    /// Gets the total demand serviced by all routes
-    /// </summary>
     public int TotalDemand => this.routes.Sum(r => r.TotalDemand);
 
-    /// <summary>
-    /// Checks if the solution is valid (all routes are valid and all customers are visited exactly once)
-    /// </summary>
     public bool IsValid
     {
         get
@@ -71,29 +53,17 @@ public class CVRPSolution
         }
     }
 
-    /// <summary>
-    /// Creates a solution from a list of routes
-    /// </summary>
-    /// <param name="graph">The graph</param>
-    /// <param name="routes">The routes</param>
     public CVRPSolution(Graph graph, IEnumerable<Route> routes)
     {
         this.graph = graph ?? throw new ArgumentNullException(nameof(graph));
         this.routes = [.. routes ?? throw new ArgumentNullException(nameof(routes))];
     }
 
-    /// <summary>
-    /// Creates a deep clone of this solution
-    /// </summary>
-    /// <returns>The cloned solution</returns>
     public CVRPSolution Clone()
     {
         return new CVRPSolution(this.graph, this.routes.Select(r => r.Clone()));
     }
 
-    /// <summary>
-    /// Returns a string representation of the solution
-    /// </summary>
     public override string ToString()
     {
         var result = $"Solution with {this.routes.Count} routes, total cost: {this.TotalCost:F2}\n";

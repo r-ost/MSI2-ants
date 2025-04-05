@@ -13,7 +13,7 @@ public class CVRPParser
     /// </summary>
     /// <param name="filePath">Path to the CVRPLIB file</param>
     /// <returns>A VRPInstance containing the graph and problem parameters</returns>
-    public static CVRPInstance ParseVRPFile(string filePath, int vehicleCount, double maxRouteDistance)
+    public static CVRPInstance ParseVRPFile(string filePath, double maxRouteDistance)
     {
         if (!File.Exists(filePath))
         {
@@ -51,7 +51,6 @@ public class CVRPParser
         {
             Graph = graph,
             VehicleCapacity = capacity,
-            VehicleCount = vehicleCount,
             MaxRouteDistance = maxRouteDistance,
             Name = GetSpecification(specifications, "NAME")?.Trim() ?? Path.GetFileNameWithoutExtension(filePath)
         };

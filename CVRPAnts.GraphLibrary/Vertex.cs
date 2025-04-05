@@ -28,14 +28,9 @@ public class Vertex(int id, int x, int y, int demand = 0)
     public int Y { get; } = y;
 
     /// <summary>
-    /// Gets the demand of this vertex (0 for depot)
+    /// Gets the demand of this vertex
     /// </summary>
     public int Demand { get; } = demand;
-
-    /// <summary>
-    /// Whether this vertex is a depot (has ID 0)
-    /// </summary>
-    public bool IsDepot => this.Id == 0;
 
     /// <summary>
     /// Calculates the Euclidean distance to another vertex

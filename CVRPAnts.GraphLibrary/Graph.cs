@@ -58,12 +58,17 @@ public class Graph
             throw new ArgumentException($"Vertex with ID {id} already exists");
         }
 
-        var vertex = new Vertex(id, x, y, demand);
-        this.vertices[id] = vertex;
         if (isDepot)
         {
+            if (demand != 0)
+            {
+                throw new ArgumentException("Depot vertex must have zero demand");
+            }
             this.depotId = id; // Update depot ID if this is a depot vertex
         }
+
+        var vertex = new Vertex(id, x, y, demand);
+        this.vertices[id] = vertex;
 
         // For full graphs, add edges to all existing vertices
         foreach (var existingVertex in this.vertices.Values.Where(v => v.Id != id))

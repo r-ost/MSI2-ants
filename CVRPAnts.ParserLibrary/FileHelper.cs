@@ -14,7 +14,6 @@ public static class FileHelper
     /// <returns>Dictionary of instance names to VRPInstances</returns>
     public static Dictionary<string, CVRPInstance> LoadAllInstancesFromDirectory(
         string directoryPath,
-        int vehicleCount,
         double maxRouteDistance)
     {
         if (!Directory.Exists(directoryPath))
@@ -29,7 +28,7 @@ public static class FileHelper
         {
             try
             {
-                var instance = CVRPParser.ParseVRPFile(file, vehicleCount, maxRouteDistance);
+                var instance = CVRPParser.ParseVRPFile(file, maxRouteDistance);
                 instances[instance.Name] = instance;
             }
             catch (Exception ex)
@@ -48,10 +47,9 @@ public static class FileHelper
     /// <returns>A VRPInstance object</returns>
     public static CVRPInstance LoadInstanceFromFile(
         string filePath,
-        int vehicleCount,
         double maxRouteDistance)
     {
-        return CVRPParser.ParseVRPFile(filePath, vehicleCount, maxRouteDistance);
+        return CVRPParser.ParseVRPFile(filePath, maxRouteDistance);
     }
 
     /// <summary>
@@ -66,7 +64,6 @@ public static class FileHelper
             // Write header
             writer.WriteLine($"# VRP Instance: {instance.Name}");
             writer.WriteLine($"# Vertices: {instance.Graph.VertexCount}");
-            writer.WriteLine($"# Vehicles: {instance.VehicleCount}");
             writer.WriteLine($"# Capacity: {instance.VehicleCapacity}");
             writer.WriteLine($"# Max Route Distance: {instance.MaxRouteDistance}");
             writer.WriteLine();

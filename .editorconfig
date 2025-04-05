@@ -1,0 +1,58 @@
+# EditorConfig is awesome: https://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+# All files
+[*]
+indent_style = space
+indent_size = 4
+end_of_line = crlf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+# C# files
+[*.cs]
+
+# IDE0160: Convert to block scoped namespace
+csharp_style_namespace_declarations = file_scoped:warning
+# Namespace declaration preferences
+dotnet_style_namespace_match_folder = true
+
+# Prefer primary constructors where appropriate
+csharp_style_prefer_primary_constructors = when_possible:suggestion
+
+# Enforce this. qualification
+dotnet_style_qualification_for_field = true
+dotnet_style_qualification_for_property = true
+dotnet_style_qualification_for_method = true
+dotnet_style_qualification_for_event = true:suggestion
+
+# Bracing preferences
+csharp_prefer_braces = true:warning
+
+# Expression-level preferences
+csharp_style_deconstructed_variable_declaration = true:suggestion
+csharp_style_prefer_index_operator = true:suggestion
+csharp_style_prefer_range_operator = true:suggestion
+
+# Null checking preferences
+csharp_style_throw_expression = true:suggestion
+csharp_style_conditional_delegate_call = true:suggestion
+
+# Code style defaults
+dotnet_sort_system_directives_first = true
+csharp_preserve_single_line_blocks = true
+csharp_preserve_single_line_statements = false
+
+# Field naming styles
+dotnet_naming_rule.instance_fields_should_not_have_prefix.severity = suggestion
+dotnet_naming_rule.instance_fields_should_not_have_prefix.symbols = instance_fields
+dotnet_naming_rule.instance_fields_should_not_have_prefix.style = instance_field_style
+
+dotnet_naming_symbols.instance_fields.applicable_kinds = field
+dotnet_naming_symbols.instance_fields.applicable_accessibilities = private, protected, private_protected
+
+dotnet_naming_style.instance_field_style.capitalization = camel_case
+dotnet_naming_style.instance_field_style.required_prefix =

@@ -8,7 +8,7 @@ public abstract class AntColonyBaseSolver(AntColonyParameters parameters, int se
     public int Seed { get; init; } = seed;
     protected readonly IProgressWriter? progressWriter = progressWriter;
 
-    protected int AntCount { get; init; } = parameters.AntCount;
+    public int AntCount { get; set; } = parameters.AntCount;
     protected int MaxIterations { get; init; } = parameters.MaxIterations;
     protected double Alpha { get; init; } = parameters.Alpha;
     protected double Beta { get; init; } = parameters.Beta;

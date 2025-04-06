@@ -63,8 +63,17 @@ public class BenchmarkRunner(string testDataDir)
                 CVRPSolution? solution;
                 try
                 {
-                    solution = solver.Solve(instance);
-                    sw.Stop();
+                    if (solver is AntColonyBaseSolver antColonySolver)
+                    {
+                        antColonySolver.AntCount = 2 * instance.Graph.VertexCount;
+                        solution = antColonySolver.Solve(instance);
+                        sw.Stop();
+                    }
+                    else
+                    {
+                        solution = solver.Solve(instance);
+                        sw.Stop();
+                    }
                 }
                 catch (Exception ex)
                 {

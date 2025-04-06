@@ -6,12 +6,12 @@ public static class TestScenarios
 {
     private static readonly AntColonyParameters standardAcoParams = new AntColonyParameters
     {
-        AntCount = 200,
+        // AntCount is set dynamically in the solver (2*number of vertices)
         MaxIterations = 10,
-        Alpha = 2.0,
+        Alpha = 1.0,
         Beta = 5.0,
         EvaporationRate = 0.2,
-        Q = 100,
+        Q = 10,
         InitialPheromone = 0.1
     };
 

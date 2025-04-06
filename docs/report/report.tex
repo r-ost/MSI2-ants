@@ -35,6 +35,10 @@
 \abstract{}
 
 
+\tableofcontents
+\newpage
+
+
 % opis problemu (uzupełniony z konspektu),
 % sprawdzone hipotezy i opis eksperymentów, które posłużyły do ich weryfikacji (rozszerzona wersja z konspektu)
 % wyniki eksperymentów przedstawione w sposób przystępny dla czytelnika – nie w formie surowych tabel z pojedynczymi wartościami,
@@ -126,9 +130,66 @@ Algorytm mrówkowy z modyfikacją Max-Min (Max-Min Ant System - MMAS) to rozwini
 
 
 \section{Sprawdzone hipotezy}
+W projekcie postawiono cztery hipotezy, których celem było porównanie jakości rozwiązań uzyskiwanych przez różne algorytmy. Hipotezy były testowane na zbiorze Uchoa et al. (2014) z bazy CVRLIB (Capacitated Vehicle Routing Problem Library), która zawiera 100 różnorodnych instancji problemu, w których występuje od 100 do 1000 klientów. W testowaniu hipotez wykorzystano 6 instancji problemu CVRP o różnych rozmiarach i rozkładach klientów. Algorytmy mrówkowe wraz z modyfikacjami 2-opt, Max-Min były uruchamiane 3 razy na każdej instancji z różnymi ziarnami. Parametry algorytmu mrówkowego i liczba iteracji były takie same dla wszystkich instancji z wyjątkiem algorytmu mrówkowego z modyfikacją Max-Min, w którym początkową liczbę feromonów ustawiono jako maksymalną liczbę feromonu. Wartości parametrów algorytmu mrówkowego były ustalane na podstawie literatury i własnych eksperymentów i przedstawiono je w tabeli \ref{tab:params}.
+
+% TODO: tabela z parametrami algorytmu mrówkowego i modyfikacji Max-Min
+% MaxIterations = 100,
+% Alpha = 1.0,
+% Beta = 5.0,
+% EvaporationRate = 0.2,
+% Q = 10,
+% InitialPheromone = 0.1,
+\begin{table}[H]
+    \label{tab:params}
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        \textbf{Parametr} & \textbf{Wartość} \\
+        \hline
+        Liczba mrówek & Równa liczbie wierzchołków w grafie \\
+        \hline
+        Liczba iteracji & 100 \\
+        \hline
+        Współczynnik parowania feromonu ($\rho$) & 0.2 \\
+        \hline
+        Waga feromonu ($\alpha$) & 1 \\
+        \hline
+        Waga heurystyki ($\beta$) & 5 \\
+        \hline
+        Ilość dodawanego feromonu ($Q$) & 10 \\
+        \hline
+        Początkowa ilość feromonu & 0.1 \\
+        \hline
+    \end{tabular}
+    \caption{Parametry algorytmu mrówkowego}
+    \label{tab:params}
+\end{table}
 
 \subsection{Hipoteza 1}
 \textit{Algorytm mrówkowy z heurystyką 2-opt znajduje trasy o co najmniej 10\% mniejszym koszcie w porównaniu do klasycznego algorytmu mrówkowego.}
+\\
+\textbf{Wynik: Częściowo prawdziwa dla dużych instancji.} 
+\\ \\
+Celem tego eksperymentu było sprawdzenie, czy heurystyka 2-opt rzeczywiście poprawia jakość rozwiązań uzyskiwanych przez algorytm mrówkowy. W tym celu porównano wyniki uzyskane przez algorytm mrówkowy z heurystyką 2-opt z wynikami uzyskanymi przez klasyczny algorytm mrówkowy.
+
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \caption{}
+        \includegraphics[width=\linewidth]{img/2opt_wzgledem_optymalnego.png}
+        \label{fig:2opt_wzgledem_optymalnego}
+    \end{minipage}%
+    \hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \caption{}
+        \includegraphics[width=\linewidth]{img/2opt_wzgledem_zwyklego.png}
+        \label{fig:2opt_wzgledem_zwyklego}
+    \end{minipage}
+\end{figure}
+\noindent Z rysunku \ref{fig:2opt_wzgledem_optymalnego} widać, że dla wszystkich instancji testowych algorytm mrówkowy z heurystyką 2-opt znalazł rozwiązania o niższym koszcie niż klasyczny algorytm mrówkowy. Rysunek \ref{fig:2opt_wzgledem_zwyklego} pokazuje, że względna różnica w długościach rozwiązań jest mniejsza niż 10\%. W przypadku instancji o największej liczbie klientów (214) różnica ta wynosi około 8\%, natomiast w przypadku instancji o najmniejszej liczbie klientów (101) różnica ta wynosi mniej niż 1\%. Widać z tego, że różnica w długości rozwiązań rośnie wraz ze wzrostem liczby wierzchołków i hipoteza ma szansę być prawdziwa dla dużych instancji problemu CVRP.
 
 \subsection{Hipoteza 2}
 \textit{Algorytm mrówkowy z modyfikacją Max-Min uzyska tak samo dobre rozwiązania jak klasyczny algorytm mrówkowy, ale będzie potrzebował do tego mniejszej liczby pojazdów.}

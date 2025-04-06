@@ -24,7 +24,6 @@
 \date{}
 \maketitle
 
-\vspace{2cm}
 % \newpage
 \hypersetup{
     linkcolor=black,
@@ -32,9 +31,17 @@
     urlcolor=black
 }
 
-\abstract{}
+\abstract{
+Niniejsza praca przedstawia analizę i porównanie algorytmów rozwiązujących problem Capacitated Vehicle Routing Problem (CVRP). W badaniach porównano cztery algorytmy: algorytm zachłanny, klasyczny algorytm mrówkowy (ACO), algorytm mrówkowy z heurystyką 2-opt oraz algorytm mrówkowy z modyfikacją Max-Min (MMAS). Postawiono cztery hipotezy dotyczące jakości rozwiązań uzyskiwanych przez różne algorytmy. Hipotezy zostały zweryfikowane w eksperymentach przeprowadzonych na zbiorze Uchoa et al. (2014) z bazy CVRLIB.
 
-Repozytorium kodu zostało umieszczone na GitHub: \url{https://github.com/r-ost/MSI2-ants}
+Wyniki badań wykazały, że algorytm mrówkowy z heurystyką 2-opt znajduje rozwiązania o najniższym koszcie wśród testowanych algorytmów. Poprawa wydajności względem klasycznego algorytmu mrówkowego wzrasta wraz z rozmiarem problemu, osiągając około 8\% dla największych badanych instancji (214 klientów). Zaobserwowano również, że korzyść z zastosowania heurystyki 2-opt wzrasta wraz ze zwiększeniem rozproszenia klientów, co potwierdziło jedną z postawionych hipotez.
+
+Wbrew oczekiwaniom, algorytm mrówkowy z modyfikacją Max-Min nie osiągnął wyników lepszych od klasycznego algorytmu mrówkowego pod względem liczby wykorzystanych pojazdów i ich obciążenia. Kolejnym zaskakującym wnioskiem było to, że wraz ze wzrostem liczby klientów, różnica jakości rozwiązań między algorytmem zachłannym a algorytmem mrówkowym maleje, co przeczy pierwotnie postawionej hipotezie.
+
+Eksperymenty potwierdzają skuteczność algorytmów mrówkowych, szczególnie z heurystyką 2-opt, w rozwiązywaniu problemu CVRP, zwłaszcza dla dużych i rozproszonych instancji problemu.}
+
+
+% }
 
 \tableofcontents
 \newpage
@@ -130,12 +137,11 @@ Heurystyka 2-opt jest stosunkowo prosta do zaimplementowania i może znacznie po
 Algorytm mrówkowy z modyfikacją Max-Min (Max-Min Ant System - MMAS) \cite{maxmin} to rozwinięcie klasycznego algorytmu mrówkowego, które wprowadza zmiany w sposobie aktualizacji feromonu. W MMAS feromon na krawędzi jest aktualizowany tylko przez najlepszą mrówkę w danej iteracji lub globalnie. Zwiększa to koncentrację feromonu na najlepszych krawędziach, co prowadzi do szybszej konwergencji algorytmu i większej eksploatacji. Dodatkowo, w MMAS wprowadza się ograniczenia na minimalną i maksymalną ilość feromonu na krawędziach oraz maksymalną liczbę iteracji bez poprawy, po której algorytm resetuje feromony. Dzięki temu algorytm jest bardziej stabilny i mniej podatny na stagnację. 
 
 
-\section{Sprawdzone hipotezy}
+\section{Eksperymenty}
 W projekcie postawiono cztery hipotezy, których celem było porównanie jakości rozwiązań uzyskiwanych przez różne algorytmy. Hipotezy były testowane na zbiorze Uchoa et al. (2014) \cite{Uchoa} z bazy CVRLIB (Capacitated Vehicle Routing Problem Library), która zawiera 100 różnorodnych instancji problemu, w których występuje od 100 do 1000 klientów. W testowaniu hipotez wykorzystano 6 instancji problemu CVRP o różnych rozmiarach i rozkładach klientów. Przykładowa instancja została pokazana na rysunku \ref{fig:n101}, a jej rozwiązanie na rysunku \ref{fig:n214}. 
 \\ \\
-Algorytmy mrówkowe wraz z modyfikacjami 2-opt i Max-Min były uruchamiane 3 razy na każdej instancji z różnymi ziarnami (wyniki były potem uśredniane). Parametry algorytmu mrówkowego i liczba iteracji były takie same dla wszystkich instancji z wyjątkiem algorytmu mrówkowego z modyfikacją Max-Min, w którym początkową liczbę feromonów ustawiono jako maksymalną liczbę feromonu. Wartości parametrów algorytmu mrówkowego były ustalane na podstawie literatury i własnych eksperymentów i przedstawiono je w tabeli \ref{tab:params}.
+Algorytmy mrówkowe wraz z modyfikacjami 2-opt i Max-Min były uruchamiane 3 razy na każdej instancji z różnymi ziarnami (wyniki były potem uśredniane). Parametry algorytmu mrówkowego i liczba iteracji były takie same dla wszystkich instancji z wyjątkiem algorytmu mrówkowego z modyfikacją Max-Min, w którym początkową liczbę feromonów ustawiono jako maksymalną liczbę feromonu. Wartości parametrów algorytmu mrówkowego były ustalane na podstawie literatury i własnych eksperymentów i przedstawiono je w tabeli \ref{tab:params}. Pełne repozytorium kodu, ze stworzonym na potrzeby projektu oprogramowaniem, znajduje się na GitHub \cite{msi2ants}.
 
-% TODO dwie przykladowe instancje problemu
 \begin{figure}[H]
     \centering
     \begin{minipage}{0.48\textwidth}
@@ -153,13 +159,6 @@ Algorytmy mrówkowe wraz z modyfikacjami 2-opt i Max-Min były uruchamiane 3 raz
     \end{minipage}
 \end{figure}
 
-% TODO: tabela z parametrami algorytmu mrówkowego i modyfikacji Max-Min
-% MaxIterations = 100,
-% Alpha = 1.0,
-% Beta = 5.0,
-% EvaporationRate = 0.2,
-% Q = 10,
-% InitialPheromone = 0.1,
 \begin{table}[H]
     \label{tab:params}
     \centering
@@ -292,9 +291,22 @@ Jednakże na rysunku \ref{fig:greedy_wzgledem_zwyklego} widać, że różnica w 
 
 \subsection{Hipoteza 4}
 \textit{Procentowa różnica kosztów wyznaczonych tras między algorytmem mrówkowym z heurystyką 2-opt i klasycznym algorytmem mrówkowym rośnie wraz ze wzrostem rozproszenia klientów (mierzonego średnią odległością klientów od magazynu) na niekorzyść klasycznego algorytmu.}
+\\
+\textbf{Wynik: Potwierdzona.}
+\\ \\
+Celem eksperymentu było sprawdzenie, czy różnica w kosztach wyznaczonych tras między algorytmem mrówkowym z heurystyką 2-opt i klasycznym algorytmem mrówkowym rośnie wraz ze wzrostem rozproszenia klientów. Hipoteza wynikała z przypuszczenia, że algorytm mrówkowy z heurystyką 2-opt lepiej radzi sobie z rozproszonymi klientami niż klasyczny algorytm mrówkowy.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.48\linewidth]{img/disperse.png}
+    \caption{O ile procent AntColony2Opt jest lepszy od AntColony?}
+    \label{fig:disperse}
+\end{figure}
+\noindent Rysunek \ref{fig:disperse} pokazuje, że różnica w długości rozwiązań rośnie wraz ze wzrostem rozproszenia klientów. Testowane były dwie podobne instancje problemu, które miały taką samą liczbę wierzchołków i podobne ułożenie klientów, ale różniły się rozproszeniem klientów. W instancji \texttt{X-n101-k25-disperse} średnia odległość klientów od magazynu była $1,78$ razy większa niż w instancji \texttt{X-n101-k25}. Widać, że algorytm mrówkowy z heurystyką 2-opt lepiej radzi sobie z bardziej rozproszonymi klientami niż klasyczny algorytm mrówkowy.
 
 \section{Wnioski}
 
+W projekcie porównano cztery algorytmy znajdujące przybliżone rozwiązanie problemu CVRP. Algorytm mrówkowy z heurystyką 2-opt okazał się najlepszym algorytmem, który znalazł rozwiązania o najmniejszym koszcie. Algorytm mrówkowy z modyfikacją Max-Min nie znalazł lepszego rozwiązania niż klasyczny algorytm mrówkowy i potrzebował porównywalnej liczby tras. Różnica w długości rozwiązań między algorytmem zachłannym a algorytmem mrówkowym malała wraz ze wzrostem rozmiaru problemu. Algorytm mrówkowy z heurystyką 2-opt lepiej radził sobie z bardziej rozproszonymi klientami niż klasyczny algorytm mrówkowy.
 
 \nocite{*}
 \bibliographystyle{unsrt}

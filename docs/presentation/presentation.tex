@@ -1,0 +1,105 @@
+\documentclass{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage{polski}
+\usepackage{indentfirst}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{xurl}
+\usepackage{tikz}
+\usepackage[skip=1ex]{caption}
+\usepackage{tabularx}
+\usepackage{subfig}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+\usepackage{subfiles}
+\usepackage{listings}
+\usepackage{xparse}
+
+\AtBeginSection[]{}
+
+\author{Jan Szablanowski}
+\title{Prezentacja}
+% \subtitle{\vspace{-3mm}\noindent\rule{0.8\textwidth}{0.4pt}}
+% \vspace{3mm} 
+% \small Prezentacja pracy dyplomowej inżynierskiej}
+% \institute{Promotor: dr inż. Janusz Rafałko}
+\date{07.04.2025}
+\usepackage{UCAS}
+\usepackage{subfiles}
+% defs
+\def\cmd#1{\texttt{\color{red}\footnotesize $\backslash$#1}}
+\def\env#1{\texttt{\color{blue}\footnotesize #1}}
+\definecolor{deepblue}{rgb}{0,0,0.5}
+\definecolor{deepred}{rgb}{0.6,0,0}
+\definecolor{deepgreen}{rgb}{0,0.5,0}
+\definecolor{halfgray}{gray}{0.55}
+
+\def\cmd#1{\texttt{\color{red}\footnotesize $\backslash$#1}}
+\def\env#1{\texttt{\color{blue}\footnotesize #1}}
+\definecolor{deepblue}{rgb}{0,0,1}
+\definecolor{deepred}{rgb}{0.6,0,0}
+\definecolor{deepgreen}{rgb}{0,0.5,0}
+\definecolor{halfgray}{gray}{0.55}
+
+\lstset{
+    basicstyle=\ttfamily\small,
+    keywordstyle=\bfseries\color{deepblue},
+    emphstyle=\ttfamily\color{deepred},    % Custom highlighting style
+    stringstyle=\color{deepgreen},
+    numbers=left,
+    numberstyle=\small\color{halfgray},
+    rulesepcolor=\color{red!20!green!20!blue!20},
+    frame=shadowbox,
+}
+\DeclareDocumentCommand \imgsrc { s O {Image credit} +m }{%
+  \IfBooleanTF{#1}{%
+        \def\tempa{off}%
+        \def\tempb{#3}%
+        \ifx\tempa\tempb
+          \gdef\@imgsrcnavigation{}%
+        \else
+          \gdef\@imgsrcnavigation{{\tiny #2:\thinspace #3}}%
+        \fi
+  }{%
+        {\tiny #2:\thinspace #3}%
+  }%
+}
+
+\begin{document}
+\beamertemplatenavigationsymbolsempty
+\begin{frame}[plain]
+    \begin{figure}
+        \begin{center}
+            \includegraphics[width=0.8\linewidth]{img/logo.png}
+        \end{center}
+    \end{figure}
+    \vspace{-4mm}
+    \titlepage
+\end{frame}
+
+\begin{frame}
+    \tableofcontents[sectionstyle=show,subsectionstyle=show/shaded/hide,subsubsectionstyle=show/shaded/hide]
+\end{frame}
+
+\section{Transformer}
+
+\begin{frame}{Architektura transformera \cite{vaswani2023attentionneed}}
+    \begin{itemize}
+        \setlength\itemsep{1em}
+        \item enkoder i dekoder
+        \item reprezentacja wzorców poprzez rozumienie zależności w danych (mechanizm uwagi)
+        \item wysoka równoległość (Multi-Headed Attention)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+    \frametitle{Bibliografia}
+    \nocite{*}
+    \bibliographystyle{unsrt}
+    \bibliography{../ref.bib}
+\end{frame}
+
+\end{document}

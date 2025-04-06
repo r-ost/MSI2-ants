@@ -17,15 +17,12 @@
 \usepackage{subfiles}
 \usepackage{listings}
 \usepackage{xparse}
+\usepackage{svg}
 
 \AtBeginSection[]{}
 
 \author{Jan Szablanowski}
-\title{Prezentacja}
-% \subtitle{\vspace{-3mm}\noindent\rule{0.8\textwidth}{0.4pt}}
-% \vspace{3mm} 
-% \small Prezentacja pracy dyplomowej inżynierskiej}
-% \institute{Promotor: dr inż. Janusz Rafałko}
+\title{Zastosowanie algorytmu mrówkowego do CVRP - prezentacja wyników}
 \date{07.04.2025}
 \usepackage{UCAS}
 \usepackage{subfiles}
@@ -80,20 +77,126 @@
     \titlepage
 \end{frame}
 
-\begin{frame}
-    \tableofcontents[sectionstyle=show,subsectionstyle=show/shaded/hide,subsubsectionstyle=show/shaded/hide]
+% \begin{frame}
+%     \tableofcontents[sectionstyle=show,subsectionstyle=show/shaded/hide,subsubsectionstyle=show/shaded/hide]
+% \end{frame}
+
+\section*{Wprowadzenie}
+
+\begin{frame}{Testowane algorytmy}
+  \begin{enumerate}
+    \setlength\itemsep{1em}
+    \item Algorytm mrówkowy (Ant Colony Optimization - ACO)
+    \item Algorytm mrówkowy z heurystyką 2-opt
+    \item Algorytm mrówkowy z modyfikacją Max-Min (Max-Min ant system - MMAS)
+    \item Algorytm zachłanny (Greedy algorithm)
+  \end{enumerate}
 \end{frame}
 
-\section{Transformer}
-
-\begin{frame}{Architektura transformera \cite{vaswani2023attentionneed}}
+\begin{frame}{Parametry algorytmów ACO i ACO 2-opt}
+    % MaxIterations = 100,
+    % Alpha = 1.0,
+    % Beta = 5.0,
+    % EvaporationRate = 0.2,
+    % Q = 10,
+    % InitialPheromone = 0.1,
     \begin{itemize}
         \setlength\itemsep{1em}
-        \item enkoder i dekoder
-        \item reprezentacja wzorców poprzez rozumienie zależności w danych (mechanizm uwagi)
-        \item wysoka równoległość (Multi-Headed Attention)
+        \item liczba mrówek $=$ liczba wierzchołków
+        \item liczba iteracji $= 100$
+        \item współczynnik wpływu feromonu $\alpha = 1.0$
+        \item współczynnik wpływu heurystyki (odległości) $\beta = 5.0$ 
+        \item współczynnik parowania feromonu $EvaporationRate = 0.2$
+        \item współczynnik dodawania feromonu $Q = 10$
+        \item początkowa ilość feromonu $InitialPheromone = 0.1$
     \end{itemize}
 \end{frame}
+
+\begin{frame}{Parametry algorytmu MMAS}
+    % PheromoneMin = 0.01,
+    % PheromoneMax = pheromoneMax,
+    % OnlyBestUpdates = false,
+    % StagnationLimit = 20
+    \begin{itemize}
+        \setlength\itemsep{1em}
+        \item minimalna ilość feromonu $PheromoneMin = 0.01$
+        \item maksymalna ilość feromonu $PheromoneMax = 10$
+        \item początkowa ilość feromonu $InitialPheromone = 10$ 
+        \item limit stagnacji (maksymalna liczba iteracji bez poprawy) $StagnationLimit = 20$
+    \end{itemize}
+\end{frame}
+
+\section*{Hipoteza 1}
+\begin{frame}
+    \textit{Algorytm mrówkowy z heurystyką 2-opt znajduje trasy o co najmniej 10\% mniejszym koszcie w porównaniu do klasycznego algorytmu mrówkowego.}
+\end{frame}
+
+\begin{frame}{Heurystyka 2-opt}
+    \begin{itemize}
+        \setlength\itemsep{1em}
+        \item heurystyka lokalna (ulepsza pojedynczą trasę po jej wyznaczeniu przez kroki algorytmu mrówkowego)
+        \item główna idea -- zmiana kolejności odwiedzania klientów w trasie, żeby nie było przecięć tras
+        \item heurystyka jest stosowana również w klasycznym TSP
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Heurystyka 2-opt -- przykład}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.5\linewidth]{img/2-opt_wiki.png}
+    \end{figure}        
+    \imgsrc{PierreSelim, CC BY-SA 3.0, via Wikimedia Commons} 
+\end{frame}
+
+\begin{frame}{Wyniki eksperymentów}
+
+\end{frame}
+
+\section*{Hipoteza 2}
+
+\begin{frame}
+    \textit{Algorytm mrówkowy z modyfikacją Max-Min znajduje rozwiązanie o koszcie nie większym niż 5\% od kosztu rozwiązania znalezionego przez klasyczny algorytm mrówkowy, ale potrzebuje do tego o 10\% mniejszej liczby pojazdów.}
+\end{frame}
+
+
+\begin{frame}{Heurystyka MAX-MIN}
+    \begin{itemize}
+        \setlength\itemsep{1em}
+        \item zmiana sposobu aktualizacji feromonu
+        \item feromon na krawędzi jest aktualizowany tylko przez najlepszą mrówkę w danej iteracji lub globalnie
+        \item feromon na krawędzi jest ograniczony przez wartości $PheromoneMin$ i $PheromoneMax$
+        \item przy braku poprawy przez pewną liczbę iteracji, algorytm resetuje feromon na krawędziach
+        \item celem jest zwiększenie jakości rozwiązań (eksploatacja)
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Wyniki eksperymentów}
+
+\end{frame}
+
+\section*{Hipoteza 3}
+\begin{frame}
+    \textit{Procentowa różnica kosztów wyznaczonych tras między algorytmem zachłannym i klasycznym algorytmem mrówkowym rośnie wraz ze wzrostem liczby klientów na niekorzyść algorytmu zachłannego.}
+\end{frame}
+
+
+\begin{frame}{Wyniki eksperymentów}
+
+\end{frame}
+
+
+\section*{Hipoteza 4}
+
+\begin{frame}
+    \textit{Procentowa różnica kosztów wyznaczonych tras między algorytmem mrówkowym z heurystyką 2-opt i klasycznym algorytmem mrówkowym rośnie wraz ze wzrostem rozproszenia klientów (mierzonego średnią odległością klientów od magazynu) na niekorzyść klasycznego algorytmu.}
+\end{frame}
+
+
+\begin{frame}{Wyniki eksperymentów}
+
+\end{frame}
+
 
 \begin{frame}[allowframebreaks]
     \frametitle{Bibliografia}

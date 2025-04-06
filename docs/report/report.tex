@@ -17,7 +17,7 @@
 
 \renewcommand{\familydefault}{\sfdefault}
 
-\title{Raport}
+\title{Zastosowanie algorytmu mrówkowego do rozwiązania problemu Capacitated Vehicle Routing Problem \\ \large{Raport końcowy}}
 \author{Jan Szablanowski}
 
 \begin{document}
@@ -31,6 +31,113 @@
     citecolor=black,
     urlcolor=black
 }
+
+\abstract{}
+
+
+% opis problemu (uzupełniony z konspektu),
+% sprawdzone hipotezy i opis eksperymentów, które posłużyły do ich weryfikacji (rozszerzona wersja z konspektu)
+% wyniki eksperymentów przedstawione w sposób przystępny dla czytelnika – nie w formie surowych tabel z pojedynczymi wartościami,
+% wniosków, w tym stwierdzenia czy postawione hipotezy są prawdziwe,
+% raport powinien zawierać odnośniki bibliograficzne do literatury, publikacji recenzowanych,
+% streszczenie na około 250 słów podsumowujące eksperymenty i najważniejsze wyniki.
+
+\section{Opis problemu}
+
+Capacitated Vehicle Routing Problem (CVRP) to problem optymalizacyjny, który jest rozszerzeniem problemu marszrutyzacji (Vehicle Routing Problem - VRP). W zadaniu VRP mamy dany nieskierowany graf pełny oraz ustaloną liczbę pojazdów. Wierzchołki grafu, poza jednym, oznaczają lokalizacje klientów na płaszczyźnie. Jeden wierzchołek jest wyszczególniony i oznacza magazyn. Krawędzie w grafie mają przypisane wagi, które oznaczają odległości między wierzchołkami. Celem problemu VRP jest odwiedzenie każdego klienta dokładnie raz, minimalizując całkowity koszt przebycia tras wszystkich pojazdów. Każda trasa zaczyna się i kończy w magazynie. W CVRP dodatkowo każdy klient ma określone zapotrzebowanie na jeden, określony produkt, a każdy pojazd może przewozić skończoną ilość produktu. W ramach projektu zakładamy dodatkowo, że droga, którą może przebyć każdy z pojazdów, jest ograniczona przez pewną stałą.
+\\ \\
+Problem CVRP jest NP-trudny [1]. W związku z tym dokładne rozwiązanie można wyznaczyć tylko dla małych instancji (rzędu kilku-kilkunastu wierzchołków). W praktyce problem CVRP rozwiązuje się, znajdując przybliżone rozwiązanie. W projekcie zostaną porównane cztery algorytmy znajdujące przybliżone rozwiązanie problemu CVRP:
+\begin{enumerate}
+    \item Algorytm mrówkowy
+    \item Algorytm mrówkowy z heurystyką 2-opt
+    \item Algorytm mrówkowy z modyfikacją Max-Min (Max-Min ant system - MMAS)
+    \item Algorytm zachłanny
+\end{enumerate}
+
+\section{Opis algorytmów}
+\subsection{Algorytm zachłanny}
+Algorytm zachłanny jest prostą heurystyką, którą można zastosować do problemu CVRP. Algorytm ten podejmuje decyzje lokalnie optymalne, licząc na uzyskanie globalnie optymalnego rozwiązania. W  przypadku problemu CVRP, w każdym kroku algorytm wybiera najbliższego klienta, który jednocześnie spełnia ograniczenia pojemności pojazdu i limitu długości trasy. Procedura powtarzana jest dla kolejnych pojazdów, aż do obsłużenia wszystkich klientów.
+\\ \\
+Algorytm zachłanny podejmuje decyzje lokalnie bez uwzględnienia przyszłych konsekwencji swoich decyzji, co może prowadzić do rozwiązań słabej jakości względem algorytmu mrówkowego. Niewątpliwą zaletą algorytmu zachłannego jest za to łatwość implementacji i szybkość działania, co może mieć znaczenie przy złożonych problemach i dużych danych wejściowych.
+
+\subsection{Algorytm mrówkowy}
+Algorytm mrówkowy (Anto Colony Optimization - ACO) to meta-heurystyczne podejście do rozwiązywania problemów trudnych obliczeniowo, które jest inspirowane zachowaniem kolonii mrówek. Mrówki podczas przemieszczania się pozostawiają po sobie ślady w postaci feromonów, którymi podążają inne mrówki. Z biegiem czasu najmocniejsze ślady powstają na najkrótszych ścieżkach, ponieważ mrówki mogą się nimi przemieszczać najszybciej.
+\\ \\
+Algorytm mrówkowy działa w iteracjach. Każda iteracja zawiera następujące kroki:
+\subsubsection*{1. Wygenerowanie pełnego rozwiązania przez każdą mrówkę na podstawie probabilistycznej funkcji przejścia}
+\begin{equation}
+    P_{ij} = \frac{(\tau_{ij})^\alpha \cdot (\eta_{ij})^\beta}{\sum_{k \in N_i} (\tau_{ik})^\alpha \cdot (\eta_{ik})^\beta}
+\end{equation}
+gdzie:
+\\
+$P_{ij}$ - prawdopodobieństwo przejścia z wierzchołka $i$ do wierzchołka $j$,
+\\
+$\tau_{ij}$ - ilość feromonu na krawędzi $i$-$j$,
+\\
+$\eta_{ij}$ - heurystyka (odwrotność odległości między wierzchołkami $i$ i $j$),
+\\
+$\alpha$ - waga feromonu,
+\\
+$\beta$ - waga heurystyki,
+\\
+$N_i$ - zbiór wierzchołków, do których mrówka może przejść z wierzchołka $i$.
+
+\subsubsection*{2. Obliczenie jakości rozwiązania i zaktualizowania najlepszego dotychczasowego rozwiązania.}
+
+\subsubsection*{3. Zaktualizowanie śladów feromonowych, uwzględniając osłabianie się feromonów.}
+
+\begin{equation}
+    \tau_{ij} = (1 - \rho) \cdot \tau_{ij} + \sum_{k=1}^{m} \Delta\tau_{ij}^k
+\end{equation}
+gdzie:
+\\
+$\rho$ - współczynnik parowania feromonu, 
+\\
+$m$ - liczba mrówek, 
+\\
+$\Delta\tau_{ij}^k$ - ilość feromonu dodanego przez mrówkę $k$ na krawędzi $i$-$j$.
+\\ \\
+Ilość feromonu dodanego przez mrówkę $k$ na krawędzi $i$-$j$ jest obliczana na podstawie jakości rozwiązania, które mrówka znalazła. Im lepsze rozwiązanie, tym więcej feromonu zostaje dodane do krawędzi.
+
+\begin{equation}
+    \Delta\tau_{ij}^k = \frac{Q}{L_k}
+\end{equation}
+gdzie:
+\\
+$Q$ - stała,
+\\
+$L_k$ - długość trasy mrówki $k$.
+
+
+\subsection{Algorytm mrówkowy z heurystyką 2-opt}
+Heurystyka 2-opt jest lokalną heurystyką, która polega na poprawie jakości rozwiązania poprzez zamianę dwóch krawędzi w trasie. Pozwala to na usunięcie przecięcia tras, co prowadzi do skrócenia całkowitej długości trasy. Heurystyka ta jest stosowana po wygenerowaniu trasy przez algorytm mrówkowy. Algorytm mrówkowy z heurystyką 2-opt działa w następujący sposób:
+\begin{enumerate}
+    \item Algorytm mrówkowy generuje trasę dla każdego pojazdu.
+    \item Dla każdej trasy algorytm mrówkowy stosuje heurystykę 2-opt, aby poprawić jakość rozwiązania.
+    \item Algorytm aktualizuje feromony na krawędziach zgodnie z jakością rozwiązania.
+\end{enumerate}
+Heurystyka 2-opt jest stosunkowo prosta do zaimplementowania i może znacznie poprawić jakość rozwiązań. W przypadku problemu CVRP, heurystyka 2-opt może być szczególnie skuteczna, ponieważ pozwala na poprawę jakości tras, które są już bliskie optymalnym.
+
+\subsection{Algorytm mrówkowy z modyfikacją Max-Min}
+
+
+
+\section{Sprawdzone hipotezy}
+
+\subsection{Hipoteza 1}
+\textit{Algorytm mrówkowy z heurystyką 2-opt znajduje trasy o co najmniej 10\% mniejszym koszcie w porównaniu do klasycznego algorytmu mrówkowego.}
+
+\subsection{Hipoteza 2}
+\textit{Algorytm mrówkowy z modyfikacją Max-Min uzyska tak samo dobre rozwiązania jak klasyczny algorytm mrówkowy, ale będzie potrzebował do tego mniejszej liczby pojazdów.}
+
+\subsection{Hipoteza 3}
+\textit{Procentowa różnica kosztów wyznaczonych tras między algorytmem zachłannym i klasycznym algorytmem mrówkowym rośnie wraz ze wzrostem liczby klientów na niekorzyść algorytmu zachłannego.}
+
+\subsection{Hipoteza 4}
+\textit{Procentowa różnica kosztów wyznaczonych tras między algorytmem mrówkowym z heurystyką 2-opt i klasycznym algorytmem mrówkowym rośnie wraz ze wzrostem rozproszenia klientów (mierzonego średnią odległością klientów od magazynu) na niekorzyść klasycznego algorytmu.}
+
+\section{Wnioski}
+
 
 \nocite{*}
 \bibliographystyle{unsrt}

@@ -17,6 +17,13 @@ public static class TestScenarios
 
     private static readonly int[] seeds = [2020, 1337, 42];
 
+    private static readonly IEnumerable<(string, int, int)> datasets = new[]
+    {
+        ("X-n125-k30", 55539, 30), // test name, optimal cost, optimal routes
+        ("X-n172-k51", 45607, 53),
+        ("X-n214-k11", 10856, 11),
+    };
+
     public static BenchmarkRunner CreateHypothesis1Test(
         string testDataDir,
         string resultsDir)
@@ -35,8 +42,10 @@ public static class TestScenarios
             runner.AddSolver($"AntColony2Opt_{seed}", aco2opt);
         }
 
-        runner.AddDataset("X-n101-k25", 27591, 26);
-        // runner.AddDataset("X-n228-k23", 25742);
+        foreach (var dataset in datasets)
+        {
+            runner.AddDataset(dataset.Item1, dataset.Item2, dataset.Item3);
+        }
 
         return runner;
     }
@@ -64,9 +73,11 @@ public static class TestScenarios
             };
             runner.AddSolver($"MaxMinAntColony_{seed}", maxMinAco);
         }
-        runner.AddDataset("X-n101-k25", 27591, 26);
-        // runner.AddDataset("X-n420-k130", 107798);
-        // runner.AddDataset("X-n367-k17", 22814);
+
+        foreach (var dataset in datasets)
+        {
+            runner.AddDataset(dataset.Item1, dataset.Item2, dataset.Item3);
+        }
 
         return runner;
     }
@@ -80,22 +91,17 @@ public static class TestScenarios
             TestName = "Hypothesis3_GreedyVsAntColony"
         };
 
-        // Add solvers
         runner.AddSolver("Greedy", new GreedySolver());
-
         foreach (var seed in seeds)
         {
             var standardAco = new AntColonySolver(standardAcoParams, seed, new ProgressWriter(resultsDir));
             runner.AddSolver($"AntColony_{seed}", standardAco);
         }
 
-        // Add datasets with varying client counts (sorted by increasing vertex count)
-        runner.AddDataset("X-n101-k25", 27591, 26);
-
-        // runner.AddDataset("X-n190-k8", 16980);
-        // runner.AddDataset("X-n228-k23", 25742);
-        // runner.AddDataset("X-n367-k17", 22814);
-        // runner.AddDataset("X-n420-k130", 107798);
+        foreach (var dataset in datasets)
+        {
+            runner.AddDataset(dataset.Item1, dataset.Item2, dataset.Item3);
+        }
 
         return runner;
     }
@@ -109,7 +115,6 @@ public static class TestScenarios
             TestName = "Hypothesis4_2OptVsClassicWithDispersion"
         };
 
-        // Add solvers
         foreach (var seed in seeds)
         {
             var standardAco = new AntColonySolver(standardAcoParams, seed, new ProgressWriter(resultsDir));
@@ -119,14 +124,10 @@ public static class TestScenarios
             runner.AddSolver($"AntColony2Opt_{seed}", aco2opt);
         }
 
-
-        // Datasets will be analyzed by client dispersion in the main program
-        runner.AddDataset("X-n101-k25", 27591, 26);
-
-        // runner.AddDataset("X-n190-k8", 16980);
-        // runner.AddDataset("X-n228-k23", 25742);
-        // runner.AddDataset("X-n367-k17", 22814);
-        // runner.AddDataset("X-n420-k130", 107798);
+        foreach (var dataset in datasets)
+        {
+            runner.AddDataset(dataset.Item1, dataset.Item2, dataset.Item3);
+        }
 
         return runner;
     }

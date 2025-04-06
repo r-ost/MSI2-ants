@@ -15,16 +15,17 @@ public class BenchmarkResult
     public double OptimalCost { get; set; }
     public int OptimalRoutesCount { get; set; }
     public double CostDifference { get; set; }
+    public double AverageRouteUtilization { get; set; }
 
     public string TestId => $"{TestName}_{Solver}_{TestData}";
 
     public override string ToString()
     {
-        return $"{TestId},{Date.ToUniversalTime():yyyy-MM-ddTHH:mm:ssZ},{Time},{Cost},{OptimalCost},{(int)CostDifference},{RoutesCount},{OptimalRoutesCount}";
+        return $"{TestId},{Date.ToUniversalTime():yyyy-MM-ddTHH:mm:ssZ},{Time},{Cost},{OptimalCost},{(int)CostDifference},{RoutesCount},{OptimalRoutesCount},{AverageRouteUtilization.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture)}";
     }
 
     public static string GetCsvHeader()
     {
-        return "TestId,Date,Time,Cost,OptimalCost,CostDifference,RoutesCount,OptimalRoutesCount";
+        return "TestId,Date,Time,Cost,OptimalCost,CostDifference,RoutesCount,OptimalRoutesCount,AverageRouteUtilization";
     }
 }

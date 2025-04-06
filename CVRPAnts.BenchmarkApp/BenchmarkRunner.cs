@@ -87,6 +87,14 @@ public class BenchmarkRunner(string testDataDir)
                     ? (solution.TotalLength - optimalCost) / optimalCost * 100
                     : 0;
 
+                // Calculate average route utilization (total demand / total capacity)
+                var sumRouteUtilization = 0.0;
+                foreach (var route in solution.Routes)
+                {
+                    sumRouteUtilization += (double)route.TotalDemand / instance.VehicleCapacity * 100;
+                }
+                var averageRouteUtilization = sumRouteUtilization / solution.RoutesCount;
+
                 var result = new BenchmarkResult
                 {
                     TestName = TestName,
@@ -100,6 +108,7 @@ public class BenchmarkRunner(string testDataDir)
                     OptimalRoutesCount = optimalRoutesCount,
                     CostDifference = costDifference,
                     Seed = solver.Seed,
+                    AverageRouteUtilization = averageRouteUtilization,
                 };
 
                 Console.WriteLine($"Result: Cost={result.Cost:F2}, Vehicles={result.RoutesCount}, Time={result.Time:F3}s");

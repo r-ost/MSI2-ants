@@ -7,7 +7,7 @@ public static class TestScenarios
     private static readonly AntColonyParameters standardAcoParams = new AntColonyParameters
     {
         // AntCount is set dynamically to number of vertices
-        MaxIterations = 150,
+        MaxIterations = 100,
         Alpha = 1.0,
         Beta = 5.0,
         EvaporationRate = 0.2,
@@ -15,7 +15,7 @@ public static class TestScenarios
         InitialPheromone = 0.1,
     };
 
-    private static readonly int[] seeds = [2020, 1337, 42];
+    private static readonly int[] seeds = [2020, 81235135, 42];
 
     private static readonly IEnumerable<(string, int, int)> datasets = new[]
     {
@@ -68,13 +68,12 @@ public static class TestScenarios
 
             var pheromoneMax = 10.0;
             maxMinAcoParameters.InitialPheromone = pheromoneMax;
-            maxMinAcoParameters.EvaporationRate = 0.1;
             var maxMinAco = new AntColonyMaxMinSolver(maxMinAcoParameters, seed, new ProgressWriter(resultsDir))
             {
                 PheromoneMin = 0.01,
                 PheromoneMax = pheromoneMax,
-                OnlyBestUpdates = true,
-                StagnationLimit = 30
+                OnlyBestUpdates = false,
+                StagnationLimit = 20
             };
             runner.AddSolver($"MaxMinAntColony_{seed}", maxMinAco);
         }

@@ -122,7 +122,7 @@ $L_k$ - długość trasy mrówki $k$.
 
 
 \subsection{Algorytm mrówkowy z heurystyką 2-opt}
-Heurystyka 2-opt jest lokalną heurystyką, która polega na poprawie jakości rozwiązania poprzez wybór dwóch wierzchołków na trasie o indeksach $i$, $j$ i usunięcie krawędzi $i - 1$-$i$ oraz $j$-$j+1$. Następnie krawędzie między wierzchołkami $i$ i $j$ są dodawane w odwrotnej kolejności. Na koniec dodawane są krawędzie $i-1$-$j$ oraz $i$-$j+1$.
+Heurystyka 2-opt jest lokalną heurystyką, która polega na poprawie jakości rozwiązania poprzez wybór dwóch wierzchołków na trasie o indeksach $i$, $j$ i usunięcie krawędzi $(i-1) \rightarrow  i$ oraz $j \rightarrow (j+1)$. Następnie krawędzie między wierzchołkami $i$ i $j$ są dodawane w odwrotnej kolejności. Na koniec dodawane są krawędzie $(i-1) \rightarrow j$ oraz $i \rightarrow (j+1)$.
 \\ \\
 Heurystyka 2-opt pozwala na usunięcie przecięcia tras, co prowadzi do skrócenia całkowitej długości trasy. Heurystyka ta jest stosowana po wygenerowaniu trasy przez algorytm mrówkowy. Algorytm mrówkowy z heurystyką 2-opt działa w następujący sposób \cite{tan}:
 \begin{enumerate}
@@ -140,7 +140,7 @@ Algorytm mrówkowy z modyfikacją Max-Min (Max-Min Ant System - MMAS) \cite{maxm
 \section{Eksperymenty}
 W projekcie postawiono cztery hipotezy, których celem było porównanie jakości rozwiązań uzyskiwanych przez różne algorytmy. Hipotezy były testowane na zbiorze Uchoa et al. (2014) \cite{Uchoa} z bazy CVRLIB (Capacitated Vehicle Routing Problem Library), która zawiera 100 różnorodnych instancji problemu, w których występuje od 100 do 1000 klientów. W testowaniu hipotez wykorzystano 6 instancji problemu CVRP o różnych rozmiarach i rozkładach klientów. Przykładowa instancja została pokazana na rysunku \ref{fig:n101}, a jej rozwiązanie na rysunku \ref{fig:n214}. 
 \\ \\
-Algorytmy mrówkowe wraz z modyfikacjami 2-opt i Max-Min były uruchamiane 3 razy na każdej instancji z różnymi ziarnami (wyniki były potem uśredniane). Parametry algorytmu mrówkowego i liczba iteracji były takie same dla wszystkich instancji z wyjątkiem algorytmu mrówkowego z modyfikacją Max-Min, w którym początkową liczbę feromonów ustawiono jako maksymalną liczbę feromonu. Wartości parametrów algorytmu mrówkowego były ustalane na podstawie literatury i własnych eksperymentów i przedstawiono je w tabeli \ref{tab:params}. Pełne repozytorium kodu, ze stworzonym na potrzeby projektu oprogramowaniem, znajduje się na GitHub \cite{msi2ants}.
+Algorytmy mrówkowe wraz z modyfikacjami 2-opt i Max-Min były uruchamiane 3 razy na każdej instancji z różnymi ziarnami (wyniki były potem uśredniane). Parametry algorytmu mrówkowego i liczba iteracji były takie same dla wszystkich przeprowadzonych testów. Wartości parametrów algorytmu mrówkowego były ustalane na podstawie literatury i własnych eksperymentów i przedstawiono je w tabeli \ref{tab:params}. Pełne repozytorium kodu, ze stworzonym na potrzeby projektu oprogramowaniem, znajduje się na GitHub \cite{msi2ants}.
 
 \begin{figure}[H]
     \centering
@@ -188,10 +188,9 @@ Algorytmy mrówkowe wraz z modyfikacjami 2-opt i Max-Min były uruchamiane 3 raz
 \subsection{Hipoteza 1}
 \textit{Algorytm mrówkowy z heurystyką 2-opt znajduje trasy o co najmniej 10\% mniejszym koszcie w porównaniu do klasycznego algorytmu mrówkowego.}
 \\
-\textbf{Wynik: Częściowo prawdziwa dla dużych instancji.} 
+\textbf{Wynik: Częściowo potwierdzona dla dużych instancji.} 
 \\ \\
-Celem tego eksperymentu było sprawdzenie, czy heurystyka 2-opt rzeczywiście poprawia jakość rozwiązań uzyskiwanych przez algorytm mrówkowy. W tym celu porównano wyniki uzyskane przez algorytm mrówkowy z heurystyką 2-opt z wynikami uzyskanymi przez klasyczny algorytm mrówkowy.
-
+Celem tego eksperymentu było sprawdzenie, czy heurystyka 2-opt rzeczywiście poprawia jakość rozwiązań uzyskiwanych przez algorytm mrówkowy. W tym celu porównano długości tras uzyskanych przez algorytm mrówkowy z heurystyką 2-opt i klasyczny algorytm mrówkowy dla trzech różnorodnych instancji problemu.
 
 \begin{figure}[H]
     \centering
@@ -209,12 +208,12 @@ Celem tego eksperymentu było sprawdzenie, czy heurystyka 2-opt rzeczywiście po
         \caption{O ile procent AntColony2Opt jest lepszy od AntColony?}
     \end{minipage}
 \end{figure}
-\noindent Z rysunku \ref{fig:2opt_wzgledem_optymalnego} widać, że dla wszystkich instancji testowych algorytm mrówkowy z heurystyką 2-opt znalazł rozwiązania o niższym koszcie niż klasyczny algorytm mrówkowy. Rysunek \ref{fig:2opt_wzgledem_zwyklego} pokazuje, że względna różnica w długościach rozwiązań jest mniejsza niż 10\%. W przypadku instancji o największej liczbie klientów (214) różnica ta wynosi około 8\%, natomiast w przypadku instancji o najmniejszej liczbie klientów (101) różnica ta wynosi mniej niż 1\%. Widać z tego, że różnica w długości rozwiązań rośnie wraz ze wzrostem liczby wierzchołków i hipoteza ma szansę być prawdziwa dla dużych instancji problemu CVRP.
+\noindent Z rysunku \ref{fig:2opt_wzgledem_optymalnego} widać, że dla wszystkich instancji testowych algorytm mrówkowy z heurystyką 2-opt znalazł rozwiązania o niższym koszcie niż klasyczny algorytm mrówkowy. Niestety wbrew hipotezie, rysunek \ref{fig:2opt_wzgledem_zwyklego} pokazuje, że względna różnica w długościach rozwiązań jest mniejsza niż 10\%. W przypadku instancji o największej liczbie klientów (214) różnica ta wynosi około 8\%, co jest wartością bliską zakładanej. Niestety w przypadku instancji o najmniejszej liczbie klientów (101) różnica ta wynosi już tylko mniej niż 1\%. Różnica w długości rozwiązań rośnie wraz ze wzrostem liczby wierzchołków i hipoteza ma szansę być prawdziwa dla większych instancji problemu CVRP.
 
 \subsection{Hipoteza 2}
 \textit{Algorytm mrówkowy z modyfikacją Max-Min znajduje rozwiązanie o koszcie nie większym niż 5\% od kosztu rozwiązania znalezionego przez klasyczny algorytm mrówkowy, ale potrzebuje do tego o 10\% mniejszej liczby pojazdów.}
 \\
-\textbf{Wynik: Fałszywa.}
+\textbf{Wynik: Odrzucona.}
 \\ \\
 \noindent Celem tego eksperymentu było sprawdzenie, czy algorytm mrówkowy z modyfikacją Max-Min znajduje rozwiązania o większej jakości niż klasyczny algorytm mrówkowy. Jakość rozwiązania jest tutaj rozumiana jako poziom wykorzystania pojemności pojazdów i wiąże się z mniejszą liczbą pojazdów potrzebnych do obsłużenia wszystkich klientów. Użyte wartości parametrów związanych z modyfikacją Max-Min przedstawiono w tabeli \ref{tab:maxmin_params}.
 
@@ -261,12 +260,12 @@ Celem tego eksperymentu było sprawdzenie, czy heurystyka 2-opt rzeczywiście po
     \end{minipage}
 \end{figure}
 
-\noindent Na rysunku \ref{fig:MMAS_wzgledem_optymalnego} widać, że algorytm mrówkowy z modyfikacją Max-Min znajduje rozwiązania o większym koszcie niż klasyczny algorytm mrówkowy. Różnica ta jest rzędu kilku-kilkunastu procent, co było spodziewane przy formułowaniu hipotezy. Z rysunku \ref{fig:maxmin_trasy} widać jednak, że algorytm mrówkowy z modyfikacją Max-Min potrzebuje porównywalnej liczby tras jak klasyczny algorytm mrówkowy i zależy to od problemu. Podobnie jest ze średnim wykorzystaniem pojemności pojazdów na trasach, które jest porównywalne dla obu algorytmów (rysunek \ref{fig:max_min_capacity}). Wynik eksperymentu, który obala hipotezę, może wynikać z nieprawidłowego doboru parametrów albo zbyt małej liczby iteracji w testach algorytmu mrówkowego z modyfikacją Max-Min.
+\noindent Na rysunku \ref{fig:MMAS_wzgledem_optymalnego} widać, że algorytm mrówkowy z modyfikacją Max-Min znajduje rozwiązania o większym koszcie niż klasyczny algorytm mrówkowy. Różnica ta jest rzędu kilku-kilkunastu procent, co było spodziewane przy formułowaniu hipotezy. Z rysunku \ref{fig:maxmin_trasy} widać jednak, że algorytm mrówkowy z modyfikacją Max-Min potrzebuje porównywalnej liczby tras jak klasyczny algorytm mrówkowy. Podobnie jest ze średnim wykorzystaniem pojemności pojazdów na trasach, które jest porównywalne dla obu algorytmów (rysunek \ref{fig:max_min_capacity}). Wynik eksperymentu, który obala hipotezę, może wynikać z nieprawidłowego doboru parametrów albo zbyt małej liczby iteracji w testach algorytmu mrówkowego z modyfikacją Max-Min.
 
 \subsection{Hipoteza 3}
 \textit{Procentowa różnica kosztów wyznaczonych tras między algorytmem zachłannym i klasycznym algorytmem mrówkowym rośnie wraz ze wzrostem liczby klientów na niekorzyść algorytmu zachłannego.}
 \\
-\textbf{Wynik: Potwierdzona hipoteza przeciwna.}
+\textbf{Wynik: Odrzucona. Potwierdzono hipotezę odwrotną.}
 \\ \\
 Celem eksperymentu było sprawdzenie, czy różnica w kosztach wyznaczonych tras między algorytmem zachłannym i klasycznym algorytmem mrówkowym rośnie wraz ze wzrostem liczby klientów. Hipoteza wynikała z przypuszczenia, że algorytm zachłanny nie jest w stanie znaleźć dobrego rozwiązania dla dużych instancji problemu CVRP, ponieważ podejmuje decyzje lokalnie optymalne.
 
@@ -287,7 +286,7 @@ Celem eksperymentu było sprawdzenie, czy różnica w kosztach wyznaczonych tras
     \end{minipage}
 \end{figure}
 \noindent Na rysunku \ref{fig:greedy_wzgledem_optymalnego} widać, że algorytm ACO znajduje rozwiązania o mniejszym koszcie niż algorytm zachłanny dla każdej instancji testowej, co było spodziewane.
-Jednakże na rysunku \ref{fig:greedy_wzgledem_zwyklego} widać, że różnica w długości rozwiązań maleje wraz ze wzrostem liczby klientów na korzyść algorytmu zachłannego, co potwierdza hipotezę odwrotną do postawionej (liczba klientów ujęta jest w nazwie instancji po literze \texttt{n}).
+Jednakże na rysunku \ref{fig:greedy_wzgledem_zwyklego} widać, że różnica w długości rozwiązań maleje wraz ze wzrostem liczby klientów na korzyść algorytmu zachłannego, co potwierdza hipotezę odwrotną do postawionej (liczba klientów ujęta jest w nazwie instancji po literze \texttt{n}).  Przyczyna tego zjawiska nie jest znana.
 
 \subsection{Hipoteza 4}
 \textit{Procentowa różnica kosztów wyznaczonych tras między algorytmem mrówkowym z heurystyką 2-opt i klasycznym algorytmem mrówkowym rośnie wraz ze wzrostem rozproszenia klientów (mierzonego średnią odległością klientów od magazynu) na niekorzyść klasycznego algorytmu.}

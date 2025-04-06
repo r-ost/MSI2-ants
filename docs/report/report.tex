@@ -110,7 +110,9 @@ $L_k$ - długość trasy mrówki $k$.
 
 
 \subsection{Algorytm mrówkowy z heurystyką 2-opt}
-Heurystyka 2-opt jest lokalną heurystyką, która polega na poprawie jakości rozwiązania poprzez zamianę dwóch krawędzi w trasie. Pozwala to na usunięcie przecięcia tras, co prowadzi do skrócenia całkowitej długości trasy. Heurystyka ta jest stosowana po wygenerowaniu trasy przez algorytm mrówkowy. Algorytm mrówkowy z heurystyką 2-opt działa w następujący sposób:
+Heurystyka 2-opt jest lokalną heurystyką, która polega na poprawie jakości rozwiązania poprzez wybór dwóch wierzchołków na trasie o indeksach $i$, $j$ i usunięcie krawędzi $i - 1$-$i$ oraz $j$-$j+1$. Następnie krawędzie między wierzchołkami $i$ i $j$ są dodawane w odwrotnej kolejności. Na koniec dodawane są krawędzie $i-1$-$j$ oraz $i$-$j+1$.
+\\ \\
+Heurystyka 2-opt pozwala na usunięcie przecięcia tras, co prowadzi do skrócenia całkowitej długości trasy. Heurystyka ta jest stosowana po wygenerowaniu trasy przez algorytm mrówkowy. Algorytm mrówkowy z heurystyką 2-opt działa w następujący sposób:
 \begin{enumerate}
     \item Algorytm mrówkowy generuje trasę dla każdego pojazdu.
     \item Dla każdej trasy algorytm mrówkowy stosuje heurystykę 2-opt, aby poprawić jakość rozwiązania.
@@ -120,6 +122,7 @@ Heurystyka 2-opt jest stosunkowo prosta do zaimplementowania i może znacznie po
 
 \subsection{Algorytm mrówkowy z modyfikacją Max-Min}
 
+Algorytm mrówkowy z modyfikacją Max-Min (Max-Min Ant System - MMAS) to rozwinięcie klasycznego algorytmu mrówkowego, które wprowadza zmiany w sposobie aktualizacji feromonu. W MMAS feromon na krawędzi jest aktualizowany tylko przez najlepszą mrówkę w danej iteracji lub globalnie. Zwiększa to koncentrację feromonu na najlepszych krawędziach, co prowadzi do szybszej konwergencji algorytmu i większej eksploatacji. Dodatkowo, w MMAS wprowadza się ograniczenia na minimalną i maksymalną ilość feromonu na krawędziach oraz maksymalną liczbę iteracji bez poprawy, po której algorytm resetuje feromony. Dzięki temu algorytm jest bardziej stabilny i mniej podatny na stagnację. 
 
 
 \section{Sprawdzone hipotezy}

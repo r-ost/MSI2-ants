@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CVRPAnts.SolversLibrary", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CVRPAnts.ParserLibrary", "CVRPAnts.ParserLibrary\CVRPAnts.ParserLibrary.csproj", "{4BD881DE-3178-4446-8BBD-A5B38E91D729}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CVRPAnts.BenchmarkApp", "CVRPAnts.BenchmarkApp\CVRPAnts.BenchmarkApp.csproj", "{05CE30C0-5F02-466F-9596-F74F4EF7959A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,18 @@ Global
 		{4BD881DE-3178-4446-8BBD-A5B38E91D729}.Release|x64.Build.0 = Release|Any CPU
 		{4BD881DE-3178-4446-8BBD-A5B38E91D729}.Release|x86.ActiveCfg = Release|Any CPU
 		{4BD881DE-3178-4446-8BBD-A5B38E91D729}.Release|x86.Build.0 = Release|Any CPU
+		{05CE30C0-5F02-466F-9596-F74F4EF7959A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05CE30C0-5F02-466F-9596-F74F4EF7959A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05CE30C0-5F02-466F-9596-F74F4EF7959A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{05CE30C0-5F02-466F-9596-F74F4EF7959A}.Debug|x64.Build.0 = Debug|Any CPU
+		{05CE30C0-5F02-466F-9596-F74F4EF7959A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{05CE30C0-5F02-466F-9596-F74F4EF7959A}.Debug|x86.Build.0 = Debug|Any CPU
+		{05CE30C0-5F02-466F-9596-F74F4EF7959A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05CE30C0-5F02-466F-9596-F74F4EF7959A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05CE30C0-5F02-466F-9596-F74F4EF7959A}.Release|x64.ActiveCfg = Release|Any CPU
+		{05CE30C0-5F02-466F-9596-F74F4EF7959A}.Release|x64.Build.0 = Release|Any CPU
+		{05CE30C0-5F02-466F-9596-F74F4EF7959A}.Release|x86.ActiveCfg = Release|Any CPU
+		{05CE30C0-5F02-466F-9596-F74F4EF7959A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

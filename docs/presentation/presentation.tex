@@ -83,12 +83,42 @@
 
 \section*{Wprowadzenie}
 
+\begin{frame}{Problem CVRP}
+    \begin{itemize}
+        \setlength\itemsep{1em}
+        \item Pojazdy dostarczają towary do klientów z jednego magazynu
+        \item Każdy pojazd ma ograniczoną pojemność
+        \item Klienci mają różne zapotrzebowanie na towary
+        \item Każdy klient musi być odwiedzony dokładnie raz
+        \item Celem jest minimalizacja całkowitego kosztu tras
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Przykład CVRP}
+    \begin{columns}
+        \begin{column}{0.55\textwidth}
+            \begin{figure}
+                \centering
+                \includegraphics[width=\linewidth]{../report/img/20250405_224145_X-n101-k25.png}
+                \caption{Instancja \texttt{X-n101-k25}}
+            \end{figure}        
+        \end{column}
+        \begin{column}{0.55\textwidth}
+            \begin{figure}
+                \centering
+                \includegraphics[width=\linewidth]{../report/img/20250407_002013_X-n101-k25_optimal.png}
+                \caption{Optymalne rozwiązanie}
+            \end{figure}        
+        \end{column}
+    \end{columns}
+\end{frame}
+
 \begin{frame}{Testowane algorytmy}
   \begin{enumerate}
     \setlength\itemsep{1em}
-    \item Algorytm mrówkowy (Ant Colony Optimization - ACO)
-    \item Algorytm mrówkowy z heurystyką 2-opt
-    \item Algorytm mrówkowy z modyfikacją Max-Min (Max-Min ant system - MMAS)
+    \item Algorytm mrówkowy (Ant Colony Optimization - ACO) \cite{dorigo}
+    \item Algorytm mrówkowy z heurystyką 2-opt \cite{tan}
+    \item Algorytm mrówkowy z modyfikacją Max-Min (Max-Min ant system - MMAS) \cite{maxmin}
     \item Algorytm zachłanny (Greedy algorithm)
   \end{enumerate}
 \end{frame}
@@ -127,8 +157,11 @@
 \end{frame}
 
 \section*{Hipoteza 1}
-\begin{frame}
+\begin{frame}{Hipoteza 1}
     \textit{Algorytm mrówkowy z heurystyką 2-opt znajduje trasy o co najmniej 10\% mniejszym koszcie w porównaniu do klasycznego algorytmu mrówkowego.}
+    \vspace{1em}
+
+    \textbf{Wynik: Częściowo potwierdzona dla dużych instancji.} 
 \end{frame}
 
 \begin{frame}{Heurystyka 2-opt}
@@ -149,13 +182,31 @@
 \end{frame}
 
 \begin{frame}{Wyniki eksperymentów}
-
+    \begin{columns}
+        \begin{column}{0.55\textwidth}
+            \begin{figure}
+                \centering
+                \includegraphics[width=\linewidth]{../report/img/2opt_wzgledem_optymalnego.png}
+                \caption{Długość rozwiązania ACO i ACO 2-opt względem optymalnego}
+            \end{figure}        
+        \end{column}
+        \begin{column}{0.55\textwidth}
+            \begin{figure}
+                \centering
+                \includegraphics[width=\linewidth]{../report/img/2opt_wzgledem_zwyklego.png}
+                \caption{O ile procent AntColony2Opt jest lepszy od AntColony?}
+            \end{figure}        
+        \end{column}
+    \end{columns}
 \end{frame}
 
 \section*{Hipoteza 2}
 
-\begin{frame}
+\begin{frame}{Hipoteza 2}
     \textit{Algorytm mrówkowy z modyfikacją Max-Min znajduje rozwiązanie o koszcie nie większym niż 5\% od kosztu rozwiązania znalezionego przez klasyczny algorytm mrówkowy, ale potrzebuje do tego o 10\% mniejszej liczby pojazdów.}
+    \vspace{1em}
+    
+    \textbf{Wynik: Odrzucona.} 
 \end{frame}
 
 
@@ -172,31 +223,80 @@
 
 
 \begin{frame}{Wyniki eksperymentów}
-
+    \begin{columns}
+        \begin{column}{0.55\textwidth}
+            \begin{figure}
+                \centering
+                \includegraphics[width=\linewidth]{../report/img/maxmin_wzgledem_optymalnego.png}
+                \caption{Długość rozwiązania ACO i MMAS względem optymalnego}
+            \end{figure}        
+        \end{column}
+        \begin{column}{0.55\textwidth}
+            \begin{figure}
+                \centering
+                \includegraphics[width=\linewidth]{../report/img/maxmin_trasy.png}
+                \caption{Liczba tras dla ACO i MMAS}
+            \end{figure}        
+        \end{column}
+    \end{columns}
 \end{frame}
 
 \section*{Hipoteza 3}
-\begin{frame}
+\begin{frame}{Hipoteza 3}
     \textit{Procentowa różnica kosztów wyznaczonych tras między algorytmem zachłannym i klasycznym algorytmem mrówkowym rośnie wraz ze wzrostem liczby klientów na niekorzyść algorytmu zachłannego.}
+    \vspace{1em}
+
+    \textbf{Wynik: Odrzucona. Potwierdzono hipotezę odwrotną.}
 \end{frame}
 
 
 \begin{frame}{Wyniki eksperymentów}
-
+    \begin{columns}
+        \begin{column}{0.55\textwidth}
+            \begin{figure}
+                \centering
+                \includegraphics[width=\linewidth]{../report/img/greed_wzgledem_optymalnego.png}
+                \caption{Długość rozwiązania ACO i Greedy względem optymalnego}
+            \end{figure}        
+        \end{column}
+        \begin{column}{0.55\textwidth}
+            \begin{figure}
+                \centering
+                \includegraphics[width=\linewidth]{../report/img/greedy_wzgledem_zwyklego.png}
+                \caption{O ile procent ACO jest lepszy od Greedy?}
+            \end{figure}        
+        \end{column}
+    \end{columns}
 \end{frame}
 
 
 \section*{Hipoteza 4}
 
-\begin{frame}
+\begin{frame}{Hipoteza 4}
     \textit{Procentowa różnica kosztów wyznaczonych tras między algorytmem mrówkowym z heurystyką 2-opt i klasycznym algorytmem mrówkowym rośnie wraz ze wzrostem rozproszenia klientów (mierzonego średnią odległością klientów od magazynu) na niekorzyść klasycznego algorytmu.}
+    \vspace{1em}
+
+    \textbf{Wynik: Potwierdzona.}
 \end{frame}
 
 
 \begin{frame}{Wyniki eksperymentów}
-
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\linewidth]{../report/img/disperse.png}
+        \caption{O ile procent AntColony2Opt jest lepszy od AntColony dla różnej wartości rozproszenia klientów?}
+    \end{figure}        
 \end{frame}
 
+\begin{frame}{Wnioski}
+    \begin{itemize}
+        \setlength\itemsep{1em}
+        \item Algorytm mrówkowy z heurystyką 2-opt osiąga najlepsze wyniki pod względem kosztu rozwiązań
+        \item Modyfikacja Max-Min nie przyniosła oczekiwanych korzyści względem klasycznego algorytmu mrówkowego
+        \item Różnica między algorytmem zachłannym a mrówkowym zaskakująco maleje wraz ze wzrostem problemu
+        \item Zastosowanie heurystyki 2-opt jest szczególnie efektywne dla problemów z dużym rozproszeniem klientów
+    \end{itemize}
+\end{frame}
 
 \begin{frame}[allowframebreaks]
     \frametitle{Bibliografia}

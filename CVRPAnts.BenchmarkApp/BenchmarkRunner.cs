@@ -65,7 +65,7 @@ public class BenchmarkRunner(string testDataDir)
                 {
                     if (solver is AntColonyBaseSolver antColonySolver)
                     {
-                        antColonySolver.AntCount = 2 * instance.Graph.VertexCount;
+                        antColonySolver.AntCount = instance.Graph.VertexCount;
                         solution = antColonySolver.Solve(instance);
                         sw.Stop();
                     }

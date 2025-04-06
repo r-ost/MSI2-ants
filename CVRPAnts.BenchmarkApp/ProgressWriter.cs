@@ -30,5 +30,6 @@ public class ProgressWriter : IProgressWriter
     public void SaveProgress(string testId)
     {
         ResultsLogger.SaveIterationResults(iterationResults, ResultsDirectory, testId);
+        this.iterationResults.Clear();
     }
 }

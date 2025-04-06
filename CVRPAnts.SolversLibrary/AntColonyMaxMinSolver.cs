@@ -19,7 +19,6 @@ public class AntColonyMaxMinSolver(AntColonyParameters parameters, int seed, IPr
         this.depot = instance.Graph.Depot ?? throw new InvalidOperationException("Depot vertex not found");
 
         this.InitializePheromones();
-        this.CalculatePheromoneMinMax();
 
         this.globalBestSolution = null!;
         double bestSolutionLength = double.MaxValue;
@@ -80,13 +79,6 @@ public class AntColonyMaxMinSolver(AntColonyParameters parameters, int seed, IPr
         }
 
         return this.globalBestSolution!;
-    }
-
-    private void CalculatePheromoneMinMax()
-    {
-        // These calculations can be refined based on problem-specific details
-        this.PheromoneMax = 1.0 / (this.EvaporationRate * this.InitialPheromone);
-        this.PheromoneMin = this.PheromoneMax * 0.1;
     }
 
     private void ResetPheromones()

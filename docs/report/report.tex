@@ -13,7 +13,7 @@
 \usepackage{float}
 \usepackage{listings}
 \usepackage[colorlinks=true, linkcolor=black]{hyperref}
-\usepackage[letterpaper,top=2cm,bottom=2cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
 
 \renewcommand{\familydefault}{\sfdefault}
 
@@ -34,6 +34,7 @@
 
 \abstract{}
 
+Repozytorium kodu zostało umieszczone na GitHub: \url{https://github.com/r-ost/MSI2-ants}
 
 \tableofcontents
 \newpage
@@ -50,7 +51,7 @@
 
 Capacitated Vehicle Routing Problem (CVRP) to problem optymalizacyjny, który jest rozszerzeniem problemu marszrutyzacji (Vehicle Routing Problem - VRP). W zadaniu VRP mamy dany nieskierowany graf pełny oraz ustaloną liczbę pojazdów. Wierzchołki grafu, poza jednym, oznaczają lokalizacje klientów na płaszczyźnie. Jeden wierzchołek jest wyszczególniony i oznacza magazyn. Krawędzie w grafie mają przypisane wagi, które oznaczają odległości między wierzchołkami. Celem problemu VRP jest odwiedzenie każdego klienta dokładnie raz, minimalizując całkowity koszt przebycia tras wszystkich pojazdów. Każda trasa zaczyna się i kończy w magazynie. W CVRP dodatkowo każdy klient ma określone zapotrzebowanie na jeden, określony produkt, a każdy pojazd może przewozić skończoną ilość produktu. W ramach projektu zakładamy dodatkowo, że droga, którą może przebyć każdy z pojazdów, jest ograniczona przez pewną stałą.
 \\ \\
-Problem CVRP jest NP-trudny [1]. W związku z tym dokładne rozwiązanie można wyznaczyć tylko dla małych instancji (rzędu kilku-kilkunastu wierzchołków). W praktyce problem CVRP rozwiązuje się, znajdując przybliżone rozwiązanie. W projekcie zostaną porównane cztery algorytmy znajdujące przybliżone rozwiązanie problemu CVRP:
+Problem CVRP jest NP-trudny \cite{lenstra}. W związku z tym dokładne rozwiązanie można wyznaczyć tylko dla małych instancji (rzędu kilku-kilkunastu wierzchołków). W praktyce problem CVRP rozwiązuje się, znajdując przybliżone rozwiązanie. W projekcie zostaną porównane cztery algorytmy znajdujące przybliżone rozwiązanie problemu CVRP:
 \begin{enumerate}
     \item Algorytm mrówkowy
     \item Algorytm mrówkowy z heurystyką 2-opt
@@ -65,7 +66,7 @@ Algorytm zachłanny jest prostą heurystyką, którą można zastosować do prob
 Algorytm zachłanny podejmuje decyzje lokalnie bez uwzględnienia przyszłych konsekwencji swoich decyzji, co może prowadzić do rozwiązań słabej jakości względem algorytmu mrówkowego. Niewątpliwą zaletą algorytmu zachłannego jest za to łatwość implementacji i szybkość działania, co może mieć znaczenie przy złożonych problemach i dużych danych wejściowych.
 
 \subsection{Algorytm mrówkowy}
-Algorytm mrówkowy (Anto Colony Optimization - ACO) to meta-heurystyczne podejście do rozwiązywania problemów trudnych obliczeniowo, które jest inspirowane zachowaniem kolonii mrówek. Mrówki podczas przemieszczania się pozostawiają po sobie ślady w postaci feromonów, którymi podążają inne mrówki. Z biegiem czasu najmocniejsze ślady powstają na najkrótszych ścieżkach, ponieważ mrówki mogą się nimi przemieszczać najszybciej.
+Algorytm mrówkowy (Anto Colony Optimization - ACO) \cite{dorigo} to meta-heurystyczne podejście do rozwiązywania problemów trudnych obliczeniowo, które jest inspirowane zachowaniem kolonii mrówek. Mrówki podczas przemieszczania się pozostawiają po sobie ślady w postaci feromonów, którymi podążają inne mrówki. Z biegiem czasu najmocniejsze ślady powstają na najkrótszych ścieżkach, ponieważ mrówki mogą się nimi przemieszczać najszybciej.
 \\ \\
 Algorytm mrówkowy działa w iteracjach. Każda iteracja zawiera następujące kroki:
 \subsubsection*{1. Wygenerowanie pełnego rozwiązania przez każdą mrówkę na podstawie probabilistycznej funkcji przejścia}
@@ -116,7 +117,7 @@ $L_k$ - długość trasy mrówki $k$.
 \subsection{Algorytm mrówkowy z heurystyką 2-opt}
 Heurystyka 2-opt jest lokalną heurystyką, która polega na poprawie jakości rozwiązania poprzez wybór dwóch wierzchołków na trasie o indeksach $i$, $j$ i usunięcie krawędzi $i - 1$-$i$ oraz $j$-$j+1$. Następnie krawędzie między wierzchołkami $i$ i $j$ są dodawane w odwrotnej kolejności. Na koniec dodawane są krawędzie $i-1$-$j$ oraz $i$-$j+1$.
 \\ \\
-Heurystyka 2-opt pozwala na usunięcie przecięcia tras, co prowadzi do skrócenia całkowitej długości trasy. Heurystyka ta jest stosowana po wygenerowaniu trasy przez algorytm mrówkowy. Algorytm mrówkowy z heurystyką 2-opt działa w następujący sposób:
+Heurystyka 2-opt pozwala na usunięcie przecięcia tras, co prowadzi do skrócenia całkowitej długości trasy. Heurystyka ta jest stosowana po wygenerowaniu trasy przez algorytm mrówkowy. Algorytm mrówkowy z heurystyką 2-opt działa w następujący sposób \cite{tan}:
 \begin{enumerate}
     \item Algorytm mrówkowy generuje trasę dla każdego pojazdu.
     \item Dla każdej trasy algorytm mrówkowy stosuje heurystykę 2-opt, aby poprawić jakość rozwiązania.
@@ -126,11 +127,31 @@ Heurystyka 2-opt jest stosunkowo prosta do zaimplementowania i może znacznie po
 
 \subsection{Algorytm mrówkowy z modyfikacją Max-Min}
 
-Algorytm mrówkowy z modyfikacją Max-Min (Max-Min Ant System - MMAS) to rozwinięcie klasycznego algorytmu mrówkowego, które wprowadza zmiany w sposobie aktualizacji feromonu. W MMAS feromon na krawędzi jest aktualizowany tylko przez najlepszą mrówkę w danej iteracji lub globalnie. Zwiększa to koncentrację feromonu na najlepszych krawędziach, co prowadzi do szybszej konwergencji algorytmu i większej eksploatacji. Dodatkowo, w MMAS wprowadza się ograniczenia na minimalną i maksymalną ilość feromonu na krawędziach oraz maksymalną liczbę iteracji bez poprawy, po której algorytm resetuje feromony. Dzięki temu algorytm jest bardziej stabilny i mniej podatny na stagnację. 
+Algorytm mrówkowy z modyfikacją Max-Min (Max-Min Ant System - MMAS) \cite{maxmin} to rozwinięcie klasycznego algorytmu mrówkowego, które wprowadza zmiany w sposobie aktualizacji feromonu. W MMAS feromon na krawędzi jest aktualizowany tylko przez najlepszą mrówkę w danej iteracji lub globalnie. Zwiększa to koncentrację feromonu na najlepszych krawędziach, co prowadzi do szybszej konwergencji algorytmu i większej eksploatacji. Dodatkowo, w MMAS wprowadza się ograniczenia na minimalną i maksymalną ilość feromonu na krawędziach oraz maksymalną liczbę iteracji bez poprawy, po której algorytm resetuje feromony. Dzięki temu algorytm jest bardziej stabilny i mniej podatny na stagnację. 
 
 
 \section{Sprawdzone hipotezy}
-W projekcie postawiono cztery hipotezy, których celem było porównanie jakości rozwiązań uzyskiwanych przez różne algorytmy. Hipotezy były testowane na zbiorze Uchoa et al. (2014) z bazy CVRLIB (Capacitated Vehicle Routing Problem Library), która zawiera 100 różnorodnych instancji problemu, w których występuje od 100 do 1000 klientów. W testowaniu hipotez wykorzystano 6 instancji problemu CVRP o różnych rozmiarach i rozkładach klientów. Algorytmy mrówkowe wraz z modyfikacjami 2-opt, Max-Min były uruchamiane 3 razy na każdej instancji z różnymi ziarnami (wyniki były potem uśredniane). Parametry algorytmu mrówkowego i liczba iteracji były takie same dla wszystkich instancji z wyjątkiem algorytmu mrówkowego z modyfikacją Max-Min, w którym początkową liczbę feromonów ustawiono jako maksymalną liczbę feromonu. Wartości parametrów algorytmu mrówkowego były ustalane na podstawie literatury i własnych eksperymentów i przedstawiono je w tabeli \ref{tab:params}.
+W projekcie postawiono cztery hipotezy, których celem było porównanie jakości rozwiązań uzyskiwanych przez różne algorytmy. Hipotezy były testowane na zbiorze Uchoa et al. (2014) \cite{Uchoa} z bazy CVRLIB (Capacitated Vehicle Routing Problem Library), która zawiera 100 różnorodnych instancji problemu, w których występuje od 100 do 1000 klientów. W testowaniu hipotez wykorzystano 6 instancji problemu CVRP o różnych rozmiarach i rozkładach klientów. Przykładowa instancja została pokazana na rysunku \ref{fig:n101}, a jej rozwiązanie na rysunku \ref{fig:n214}. 
+\\ \\
+Algorytmy mrówkowe wraz z modyfikacjami 2-opt i Max-Min były uruchamiane 3 razy na każdej instancji z różnymi ziarnami (wyniki były potem uśredniane). Parametry algorytmu mrówkowego i liczba iteracji były takie same dla wszystkich instancji z wyjątkiem algorytmu mrówkowego z modyfikacją Max-Min, w którym początkową liczbę feromonów ustawiono jako maksymalną liczbę feromonu. Wartości parametrów algorytmu mrówkowego były ustalane na podstawie literatury i własnych eksperymentów i przedstawiono je w tabeli \ref{tab:params}.
+
+% TODO dwie przykladowe instancje problemu
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/20250405_224145_X-n101-k25.png}
+        \caption{Instancja \texttt{X-n101-k25} -- wierzchołki oznaczono jako: \texttt{IdKlienta(Zapotrzebowanie)}. Magazyn oznaczono na czerwono}
+        \label{fig:n101}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/20250407_002013_X-n101-k25_optimal.png}
+        \caption{Optymalne rozwiązanie instancji \texttt{X-n101-k25}}
+        \label{fig:n214}
+    \end{minipage}
+\end{figure}
 
 % TODO: tabela z parametrami algorytmu mrówkowego i modyfikacji Max-Min
 % MaxIterations = 100,
@@ -245,8 +266,29 @@ Celem tego eksperymentu było sprawdzenie, czy heurystyka 2-opt rzeczywiście po
 
 \subsection{Hipoteza 3}
 \textit{Procentowa różnica kosztów wyznaczonych tras między algorytmem zachłannym i klasycznym algorytmem mrówkowym rośnie wraz ze wzrostem liczby klientów na niekorzyść algorytmu zachłannego.}
+\\
+\textbf{Wynik: Potwierdzona hipoteza przeciwna.}
+\\ \\
+Celem eksperymentu było sprawdzenie, czy różnica w kosztach wyznaczonych tras między algorytmem zachłannym i klasycznym algorytmem mrówkowym rośnie wraz ze wzrostem liczby klientów. Hipoteza wynikała z przypuszczenia, że algorytm zachłanny nie jest w stanie znaleźć dobrego rozwiązania dla dużych instancji problemu CVRP, ponieważ podejmuje decyzje lokalnie optymalne.
 
-
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/greed_wzgledem_optymalnego.png}
+        \caption{Długość rozwiązania ACO i Greedy względem optymalnego}
+        \label{fig:greedy_wzgledem_optymalnego}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/greedy_wzgledem_zwyklego.png}
+        \caption{O ile procent ACO jest lepszy od Greedy?}
+        \label{fig:greedy_wzgledem_zwyklego}
+    \end{minipage}
+\end{figure}
+\noindent Na rysunku \ref{fig:greedy_wzgledem_optymalnego} widać, że algorytm ACO znajduje rozwiązania o mniejszym koszcie niż algorytm zachłanny dla każdej instancji testowej, co było spodziewane.
+Jednakże na rysunku \ref{fig:greedy_wzgledem_zwyklego} widać, że różnica w długości rozwiązań maleje wraz ze wzrostem liczby klientów na korzyść algorytmu zachłannego, co potwierdza hipotezę odwrotną do postawionej (liczba klientów ujęta jest w nazwie instancji po literze \texttt{n}).
 
 \subsection{Hipoteza 4}
 \textit{Procentowa różnica kosztów wyznaczonych tras między algorytmem mrówkowym z heurystyką 2-opt i klasycznym algorytmem mrówkowym rośnie wraz ze wzrostem rozproszenia klientów (mierzonego średnią odległością klientów od magazynu) na niekorzyść klasycznego algorytmu.}

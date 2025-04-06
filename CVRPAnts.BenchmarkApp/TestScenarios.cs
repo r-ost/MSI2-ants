@@ -1,6 +1,6 @@
 using CVRPAnts.SolversLibrary;
 
-namespace CVRPAnts.BenchmarkApp.Services;
+namespace CVRPAnts.BenchmarkApp;
 
 public static class TestScenarios
 {

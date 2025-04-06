@@ -1,7 +1,7 @@
 using CVRPAnts.BenchmarkApp.Models;
 using CVRPAnts.SolversLibrary;
 
-namespace CVRPAnts.BenchmarkApp.Services;
+namespace CVRPAnts.BenchmarkApp;
 
 public class ProgressWriter : IProgressWriter
 {

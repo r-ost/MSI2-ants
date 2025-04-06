@@ -1,9 +1,4 @@
-﻿using CVRPAnts.BenchmarkApp.Models;
-using CVRPAnts.BenchmarkApp.Services;
-using CVRPAnts.ParserLibrary;
-using CVRPAnts.SolversLibrary;
-
-namespace CVRPAnts.BenchmarkApp;
+﻿namespace CVRPAnts.BenchmarkApp;
 
 internal class Program
 {

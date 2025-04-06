@@ -3,7 +3,7 @@ using CVRPAnts.BenchmarkApp.Models;
 using CVRPAnts.ParserLibrary;
 using CVRPAnts.SolversLibrary;
 
-namespace CVRPAnts.BenchmarkApp.Services;
+namespace CVRPAnts.BenchmarkApp;
 
 public class BenchmarkRunner(string testDataDir)
 {

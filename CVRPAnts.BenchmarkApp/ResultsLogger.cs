@@ -1,6 +1,6 @@
 using CVRPAnts.BenchmarkApp.Models;
 
-namespace CVRPAnts.BenchmarkApp.Services;
+namespace CVRPAnts.BenchmarkApp;
 
 public static class ResultsLogger
 {

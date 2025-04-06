@@ -1,31 +1,35 @@
-namespace CVRPAnts.SolversLibrary;
 
 using CVRPAnts.GraphLibrary;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
+namespace CVRPAnts.SolversLibrary;
 public abstract class AntColonyBaseSolver : ICVRPSolver
 {
     protected readonly Random random = new(1337);
+    protected readonly IProgressWriter? progressWriter;
 
-    // ACO parameters
-    public int AntCount { get; set; } = 10;
-    public int MaxIterations { get; set; } = 100;
-    public double Alpha { get; set; } = 1.0;  // Pheromone importance
-    public double Beta { get; set; } = 2.0;   // Heuristic importance
-    public double EvaporationRate { get; set; } = 0.5;
-    public double Q { get; set; } = 100;      // Pheromone deposit factor
-    public double InitialPheromone { get; set; } = 0.1;
+    protected int AntCount { get; init; }
+    protected int MaxIterations { get; init; }
+    protected double Alpha { get; init; }
+    protected double Beta { get; init; }
+    protected double EvaporationRate { get; init; }
+    protected double Q { get; init; }
+    protected double InitialPheromone { get; init; }
 
     protected Graph? graph;
     protected int capacity;
     protected double maxRouteDistance;
     protected Vertex? depot;
 
-    protected AntColonyBaseSolver(int? seed = null)
+    protected AntColonyBaseSolver(AntColonyParameters parameters, IProgressWriter? progressWriter = null)
     {
-        this.random = seed.HasValue ? new Random(seed.Value) : new Random();
+        this.AntCount = parameters.AntCount;
+        this.MaxIterations = parameters.MaxIterations;
+        this.Alpha = parameters.Alpha;
+        this.Beta = parameters.Beta;
+        this.EvaporationRate = parameters.EvaporationRate;
+        this.Q = parameters.Q;
+        this.InitialPheromone = parameters.InitialPheromone;
+        this.progressWriter = progressWriter;
     }
 
     public virtual CVRPSolution Solve(CVRPInstance instance)
@@ -41,6 +45,7 @@ public abstract class AntColonyBaseSolver : ICVRPSolver
         double bestSolutionLength = double.MaxValue;
 
         // Main ACO loop
+        var stopwatch = System.Diagnostics.Stopwatch.StartNew();
         for (int iteration = 0; iteration < MaxIterations; iteration++)
         {
             var antSolutions = new List<CVRPSolution>();
@@ -64,8 +69,10 @@ public abstract class AntColonyBaseSolver : ICVRPSolver
                 }
             }
 
-            // Update pheromones
             UpdatePheromones(antSolutions);
+
+            var elapsedTime = stopwatch.ElapsedMilliseconds / 1000.0;
+            this.progressWriter?.WriteProgress(iteration, elapsedTime, bestSolutionLength);
         }
 
         return bestSolution;

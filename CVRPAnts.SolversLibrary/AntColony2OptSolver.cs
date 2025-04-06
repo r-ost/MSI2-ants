@@ -1,9 +1,6 @@
 namespace CVRPAnts.SolversLibrary;
-
-using CVRPAnts.GraphLibrary;
-using System.Collections.Generic;
-
-public class AntColony2OptSolver(int? seed = null) : AntColonyBaseSolver(seed)
+public class AntColony2OptSolver(AntColonyParameters parameters, IProgressWriter? progressWriter)
+    : AntColonyBaseSolver(parameters, progressWriter)
 {
     protected override CVRPSolution OptimizeSolution(CVRPSolution solution)
     {

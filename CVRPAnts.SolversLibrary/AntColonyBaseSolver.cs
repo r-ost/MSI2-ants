@@ -2,35 +2,25 @@
 using CVRPAnts.GraphLibrary;
 
 namespace CVRPAnts.SolversLibrary;
-public abstract class AntColonyBaseSolver : ICVRPSolver
+public abstract class AntColonyBaseSolver(AntColonyParameters parameters, int seed, IProgressWriter? progressWriter = null) : ICVRPSolver
 {
-    protected readonly Random random = new(1337);
-    protected readonly IProgressWriter? progressWriter;
+    protected Random random = new(seed);
+    public int Seed { get; init; } = seed;
+    protected readonly IProgressWriter? progressWriter = progressWriter;
 
-    protected int AntCount { get; init; }
-    protected int MaxIterations { get; init; }
-    protected double Alpha { get; init; }
-    protected double Beta { get; init; }
-    protected double EvaporationRate { get; init; }
-    protected double Q { get; init; }
-    protected double InitialPheromone { get; init; }
+    protected int AntCount { get; init; } = parameters.AntCount;
+    protected int MaxIterations { get; init; } = parameters.MaxIterations;
+    protected double Alpha { get; init; } = parameters.Alpha;
+    protected double Beta { get; init; } = parameters.Beta;
+    protected double EvaporationRate { get; init; } = parameters.EvaporationRate;
+    protected double Q { get; init; } = parameters.Q;
+    protected double InitialPheromone { get; init; } = parameters.InitialPheromone;
 
     protected Graph? graph;
     protected int capacity;
     protected double maxRouteDistance;
     protected Vertex? depot;
-
-    protected AntColonyBaseSolver(AntColonyParameters parameters, IProgressWriter? progressWriter = null)
-    {
-        this.AntCount = parameters.AntCount;
-        this.MaxIterations = parameters.MaxIterations;
-        this.Alpha = parameters.Alpha;
-        this.Beta = parameters.Beta;
-        this.EvaporationRate = parameters.EvaporationRate;
-        this.Q = parameters.Q;
-        this.InitialPheromone = parameters.InitialPheromone;
-        this.progressWriter = progressWriter;
-    }
+    public IProgressWriter? ProgressWriter => progressWriter;
 
     public virtual CVRPSolution Solve(CVRPInstance instance)
     {
@@ -71,8 +61,8 @@ public abstract class AntColonyBaseSolver : ICVRPSolver
 
             UpdatePheromones(antSolutions);
 
-            var elapsedTime = stopwatch.ElapsedMilliseconds / 1000.0;
-            this.progressWriter?.WriteProgress(iteration, elapsedTime, bestSolutionLength);
+            var elapsedTime = stopwatch.ElapsedMilliseconds;
+            this.progressWriter?.WriteProgress(iteration, elapsedTime, bestSolutionLength, bestSolution.Routes.Count);
         }
 
         return bestSolution;
@@ -116,7 +106,7 @@ public abstract class AntColonyBaseSolver : ICVRPSolver
         var route = new Route(graph!, capacity, maxRouteDistance);
 
         // add random vertex as beginning of the route
-        var randomCustomerId = unvisitedCustomers.ElementAt(random.Next(unvisitedCustomers.Count));
+        var randomCustomerId = unvisitedCustomers.ElementAt(random!.Next(unvisitedCustomers.Count));
         var randomCustomer = graph!.GetVertex(randomCustomerId);
         route.AddVertex(randomCustomer);
         unvisitedCustomers.Remove(randomCustomerId);
@@ -182,7 +172,7 @@ public abstract class AntColonyBaseSolver : ICVRPSolver
         }
 
         // Select next vertex using roulette wheel selection
-        double randomValue = random.NextDouble() * totalProbability;
+        double randomValue = random!.NextDouble() * totalProbability;
         double cumulativeProbability = 0;
 
         foreach (var candidate in validCandidates)

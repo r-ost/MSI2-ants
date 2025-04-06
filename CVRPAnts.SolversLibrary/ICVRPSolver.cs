@@ -2,5 +2,9 @@ namespace CVRPAnts.SolversLibrary;
 
 public interface ICVRPSolver
 {
-    CVRPSolution Solve(CVRPInstance parameters);
+    CVRPSolution Solve(CVRPInstance instance);
+
+    IProgressWriter? ProgressWriter { get; }
+
+    int Seed { get; }
 }

@@ -1,7 +1,5 @@
 namespace CVRPAnts.SolversLibrary;
-public class AntColonySolver : AntColonyBaseSolver
+public class AntColonySolver(AntColonyParameters parameters, int seed, IProgressWriter? progressWriter)
+    : AntColonyBaseSolver(parameters, seed, progressWriter)
 {
-    public AntColonySolver(AntColonyParameters parameters) : base(parameters)
-    {
-    }
 }

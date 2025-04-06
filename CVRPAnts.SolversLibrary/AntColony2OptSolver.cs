@@ -1,6 +1,6 @@
 namespace CVRPAnts.SolversLibrary;
-public class AntColony2OptSolver(AntColonyParameters parameters, IProgressWriter? progressWriter)
-    : AntColonyBaseSolver(parameters, progressWriter)
+public class AntColony2OptSolver(AntColonyParameters parameters, int seed, IProgressWriter? progressWriter)
+    : AntColonyBaseSolver(parameters, seed, progressWriter)
 {
     protected override CVRPSolution OptimizeSolution(CVRPSolution solution)
     {

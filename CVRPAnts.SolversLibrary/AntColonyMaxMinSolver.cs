@@ -1,6 +1,6 @@
 namespace CVRPAnts.SolversLibrary;
-public class AntColonyMaxMinSolver(AntColonyParameters parameters, IProgressWriter? progressWriter)
-    : AntColonyBaseSolver(parameters, progressWriter)
+public class AntColonyMaxMinSolver(AntColonyParameters parameters, int seed, IProgressWriter? progressWriter)
+    : AntColonyBaseSolver(parameters, seed, progressWriter)
 {
     public double PheromoneMax { get; set; } = 10.0;
     public double PheromoneMin { get; set; } = 0.1;
@@ -72,7 +72,11 @@ public class AntColonyMaxMinSolver(AntColonyParameters parameters, IProgressWrit
                 this.iterationsWithoutImprovement = 0;
             }
 
-            this.progressWriter?.WriteProgress(iteration, stopwatch.ElapsedMilliseconds / 1000.0, bestSolutionLength);
+            this.progressWriter?.WriteProgress(
+                iteration,
+                stopwatch.ElapsedMilliseconds,
+                this.globalBestSolution.TotalLength,
+                this.globalBestSolution.RoutesCount);
         }
 
         return this.globalBestSolution!;

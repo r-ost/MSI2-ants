@@ -4,6 +4,9 @@ namespace CVRPAnts.SolversLibrary;
 
 public class GreedySolver : ICVRPSolver
 {
+    public IProgressWriter? ProgressWriter { get; set; } = null;
+    public int Seed { get; set; } = 0;
+
     public CVRPSolution Solve(CVRPInstance instance)
     {
         // w każdym kroku wybierz najblizszego klienta, dla ktorego trasa bedzie valid

@@ -1,5 +1,6 @@
 TestData
 CVRPAnts.ConsoleApp/Plots
+Results/
 
 ## A streamlined .gitignore for modern .NET projects
 ## including temporary files, build results, and

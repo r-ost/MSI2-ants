@@ -9,4 +9,10 @@
     <RootNamespace>CVRPAnts.BenchmarkApp</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CVRPAnts.GraphLibrary\CVRPAnts.GraphLibrary.csproj" />
+    <ProjectReference Include="..\CVRPAnts.ParserLibrary\CVRPAnts.ParserLibrary.csproj" />
+    <ProjectReference Include="..\CVRPAnts.SolversLibrary\CVRPAnts.SolversLibrary.csproj" />
+  </ItemGroup>
+
 </Project>
